@@ -1,8 +1,12 @@
-package edu.hm.cs.swa.projekt_2.rest;
+package edu.hm.cs.swa.projekt_2.logic;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Logger;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -10,17 +14,21 @@ import javax.ws.rs.core.MediaType;
 import edu.hm.cs.swa.projekt_2.datamodel.Book;
 import edu.hm.cs.swa.projekt_2.datamodel.Disc;
 import edu.hm.cs.swa.projekt_2.datamodel.Medium;
+import edu.hm.cs.swa.projekt_2.persistence.DataStore;
 
 
-@Path("media")
+
 public class MediaServiceImpl implements MediaService {
 	
 	Logger LOGGER = Logger.getLogger(MediaServiceResult.class.getName());
 
+
 	@Override
 	public MediaServiceResult addBook(Book book) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		System.out.println("neues buch");
+		
+		return MediaServiceResult.OK;
 	}
 
 	@Override
@@ -29,14 +37,13 @@ public class MediaServiceImpl implements MediaService {
 		return null;
 	}
 
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
+
 	@Override
 	public Medium[] getBooks() {
-		// TODO Auto-generated method stub
-		LOGGER.info("i am here");
-		System.out.println("asdasd");
-		return null;
+		
+
+		
+		return DataStore.INSTANCE.getBooks();
 	}
 
 	@Override
@@ -56,5 +63,4 @@ public class MediaServiceImpl implements MediaService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

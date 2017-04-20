@@ -1,4 +1,4 @@
-package edu.hm.cs.swa.projekt_2.rest;
+package edu.hm.cs.swa.projekt_2.logic;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;

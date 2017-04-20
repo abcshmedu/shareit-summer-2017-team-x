@@ -1,5 +1,7 @@
-package edu.hm.cs.swa.projekt_2.rest;
+package edu.hm.cs.swa.projekt_2.logic;
 
 public enum MediaServiceResult {
 
+	OK
+	
 }
