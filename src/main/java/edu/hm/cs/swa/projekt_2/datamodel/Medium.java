@@ -4,6 +4,9 @@ public abstract class Medium {
 
     private String title;
 
+    Medium() {
+    }
+
     public Medium(String title) {
         this.title = title;
     }

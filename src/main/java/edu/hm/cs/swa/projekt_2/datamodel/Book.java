@@ -5,6 +5,8 @@ public class Book extends Medium {
     private String author;
     private String isbn;
 
+    Book() {
+    }
 
     public Book(String author, String isbn, String title) {
         super(title);

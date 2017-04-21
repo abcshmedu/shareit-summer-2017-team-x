@@ -15,10 +15,14 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult addBook(Book book) {
-        // TODO Barcode handling (Aufgabenstellung beachten)
-        DataStore.INSTANCE.addBook(book);
-        LOGGER.info("New book added: " + book.toString());
-        return MediaServiceResult.OK;
+        // TODO ISBN handling (Aufgabenstellung beachten)
+        if (DataStore.INSTANCE.getBook(book.getIsbn()) == null) {
+            DataStore.INSTANCE.addBook(book);
+            LOGGER.info("New book added: " + book.toString());
+
+            return MediaServiceResult.OK;
+        }
+        return MediaServiceResult.FAIL;
     }
 
     @Override
@@ -29,10 +33,18 @@ public class MediaServiceImpl implements MediaService {
         return MediaServiceResult.OK;
     }
 
-
     @Override
     public Medium[] getBooks() {
         return DataStore.INSTANCE.getBooks();
+    }
+
+    @Override
+    public Medium getBook(String isbn) {
+        return DataStore.INSTANCE.getBook(isbn);
+    }
+
+    public Medium getDisc(String barcode) {
+        return DataStore.INSTANCE.getDisc(barcode);
     }
 
     @Override

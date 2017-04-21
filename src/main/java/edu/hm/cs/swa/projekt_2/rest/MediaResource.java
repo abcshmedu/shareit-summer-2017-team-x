@@ -10,6 +10,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -33,6 +34,30 @@ public class MediaResource {
             return Response.ok(service.addBook(newBook)).build();
         } catch (Exception ex) {
             // error handling for later multi user
+
+            /*
+             Möglicher Fehler: Ungültige ISBN
+             Möglicher Fehler: ISBN bereits vorhanden
+             Möglicher Fehler: Autor oder Titel fehlt
+             */
+        }
+        return Response.serverError().build();
+    }
+
+    @GET
+    @Path("books/{isbn}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response getBook(@PathParam("isbn") String isbn) {
+
+        MediaService service = new MediaServiceImpl();
+        if (!isbn.isEmpty()) {
+            LOGGER.info("rest request: get single book. isbn: " + isbn);
+
+            try {
+                return Response.ok(service.getBook(isbn)).build();
+            } catch (Exception exc) {
+                // error handling for later multi user
+            }
         }
         return Response.serverError().build();
     }
@@ -41,9 +66,9 @@ public class MediaResource {
     @Path("books")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Response getBooks() {
+        MediaService service = new MediaServiceImpl();
         LOGGER.info("rest request: get all books");
 
-        MediaService service = new MediaServiceImpl();
         try {
             return Response.ok(service.getBooks()).build();
         } catch (Exception ex) {
@@ -82,13 +107,32 @@ public class MediaResource {
     @Path("discs")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Response getDiscs() {
-        LOGGER.info("rest request: get all discs");
 
         MediaService service = new MediaServiceImpl();
+        LOGGER.info("rest request: get all discs");
+
         try {
             return Response.ok(service.getDiscs()).build();
         } catch (Exception ex) {
             // error handling for later multi user
+        }
+        return Response.serverError().build();
+    }
+
+    @GET
+    @Path("discs/{barcode}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response getDisc(@PathParam("barcode") String barcode) {
+        MediaService service = new MediaServiceImpl();
+        if (!barcode.isEmpty()) {
+            LOGGER.info("rest request: get single disc. barcode: " + barcode);
+
+            try {
+                return Response.ok(service.getDisc(barcode)).build();
+            } catch (Exception exc) {
+                // error handling for later multi user
+                LOGGER.info("failure: " + exc.getLocalizedMessage());
+            }
         }
         return Response.serverError().build();
     }
