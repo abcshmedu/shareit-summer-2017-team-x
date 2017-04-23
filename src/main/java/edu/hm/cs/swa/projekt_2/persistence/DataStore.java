@@ -17,13 +17,13 @@ public class DataStore {
 
     private DataStore() {
         bookList = new LinkedList<>();
-        bookList.add(new Book("hans", "blabla", "blubdiwub"));
-        bookList.add(new Book("Günther", "asdasderfiuhch", "ÜmlÄÜte in Ällen Lebenslägen"));
-
         discList = new LinkedList<>();
         copyList = new LinkedList<>();
     }
 
+    public void reset() {
+        INSTANCE = new DataStore();
+    }
 
     public Medium[] getBooks() {
         return bookList.toArray(new Medium[bookList.size()]);
@@ -32,6 +32,7 @@ public class DataStore {
     public Medium[] getDiscs() {
         return discList.toArray(new Medium[discList.size()]);
     }
+
 
     public Medium getDisc(String barcode) {
         return discList.stream().filter(i -> ((Disc) i).getBarcode().equals(barcode)).findFirst().orElse(null);
