@@ -19,13 +19,19 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult addBook(Book book) {
-        if (checkIsbn(book.getIsbn()) && !containsIsbn(book.getIsbn())) {
-            DataStore.INSTANCE.addBook(book);
-            LOGGER.info("New book added: " + book.toString());
+        if (!checkIsbn(book.getIsbn()))
+            return MediaServiceResult.NOT_FOUND; // Ungülitge ISBN
+        if (containsIsbn(book.getIsbn()))
+            return MediaServiceResult.NOT_FOUND; // ISBN bereits vorhanden
+        if (book.getTitle() == null || book.getTitle().isEmpty())
+            return MediaServiceResult.NOT_FOUND; // Titel fehlt
+        if (book.getAuthor() == null || book.getAuthor().isEmpty())
+            return MediaServiceResult.NOT_FOUND; // Autor fehlt
 
-            return MediaServiceResult.OK;
-        }
-        return MediaServiceResult.NOT_FOUND;
+        DataStore.INSTANCE.addBook(book);
+        LOGGER.info("New book added: " + book.toString());
+
+        return MediaServiceResult.OK;
     }
 
     static boolean checkIsbn(String isbn) {
@@ -38,7 +44,7 @@ public class MediaServiceImpl implements MediaService {
     static boolean checkBarcode(String barcode) {
         if (barcode == null || !Pattern.matches(REGEX_BARCODE, barcode))
             return false;
-        int[] z = barcode.chars().map(Character::getNumericValue).toArray();
+        int[] z = barcode.replaceAll("[^0-9]", "").chars().map(Character::getNumericValue).toArray();
         int pruefsumme = z[z.length - 1];
         z = Arrays.copyOf(z, z.length - 1);
         int sum = 0;
@@ -54,12 +60,19 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult addDisc(Disc disc) {
-        if (checkBarcode(disc.getBarcode()) && !containsBarcode(disc.getBarcode())) {
-            DataStore.INSTANCE.addDisc(disc);
-            LOGGER.info("New disc added: " + disc.toString());
-            return MediaServiceResult.OK;
-        }
-        return MediaServiceResult.NOT_FOUND;
+
+        if (!checkIsbn(disc.getBarcode()))
+            return MediaServiceResult.NOT_FOUND; // Ungülitge Barcode
+        if (containsBarcode(disc.getBarcode()))
+            return MediaServiceResult.NOT_FOUND; // Barcode bereits vorhanden
+        if (disc.getTitle() == null || disc.getTitle().isEmpty())
+            return MediaServiceResult.NOT_FOUND; // Titel fehlt
+        if (disc.getDirector() == null || disc.getDirector().isEmpty())
+            return MediaServiceResult.NOT_FOUND; // Director fehlt
+
+        DataStore.INSTANCE.addDisc(disc);
+        LOGGER.info("New disc added: " + disc.toString());
+        return MediaServiceResult.OK;
     }
 
     private boolean containsIsbn(String isbn) {

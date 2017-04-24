@@ -25,6 +25,50 @@ public class MediaServiceImplTest {
     }
 
     @Test
+    public void addBookFalseIsbn() throws Exception {
+        Book newBook = new Book("author", "978-3836217275", "title");
+        MediaService service = new MediaServiceImpl();
+        service.addBook(newBook);
+        Assert.assertEquals(0, DataStore.INSTANCE.getBooks().length);
+    }
+
+    @Test
+    public void addBookFalseTitleEmpty() throws Exception {
+        Book newBook = new Book("author", "978-3836217798", "");
+        MediaService service = new MediaServiceImpl();
+        MediaServiceResult r = service.addBook(newBook);
+        Assert.assertEquals(MediaServiceResult.NOT_FOUND, r);
+        Assert.assertEquals(0, DataStore.INSTANCE.getBooks().length);
+    }
+
+    @Test
+    public void addBookFalseTitleNull() throws Exception {
+        Book newBook = new Book("author", "978-3836217798", null);
+        MediaService service = new MediaServiceImpl();
+        MediaServiceResult r = service.addBook(newBook);
+        Assert.assertEquals(MediaServiceResult.NOT_FOUND, r);
+        Assert.assertEquals(0, DataStore.INSTANCE.getBooks().length);
+    }
+
+    @Test
+    public void addBookFalseAuthorEmpty() throws Exception {
+        Book newBook = new Book("", "978-3836217275", "title");
+        MediaService service = new MediaServiceImpl();
+        MediaServiceResult r = service.addBook(newBook);
+        Assert.assertEquals(MediaServiceResult.NOT_FOUND, r);
+        Assert.assertEquals(0, DataStore.INSTANCE.getBooks().length);
+    }
+
+    @Test
+    public void addBookFalseAuthorNull() throws Exception {
+        Book newBook = new Book(null, "978-3836217275", "title");
+        MediaService service = new MediaServiceImpl();
+        MediaServiceResult r = service.addBook(newBook);
+        Assert.assertEquals(MediaServiceResult.NOT_FOUND, r);
+        Assert.assertEquals(0, DataStore.INSTANCE.getBooks().length);
+    }
+
+    @Test
     public void addBookTwice() throws Exception {
         Book newBook = new Book("author", "978-3836217798", "title");
         MediaService service = new MediaServiceImpl();
