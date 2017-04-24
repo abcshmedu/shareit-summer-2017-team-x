@@ -17,10 +17,8 @@ public class MediaServiceImpl implements MediaService {
     private static String REGEX_ISBN_13 = "[0-9]{3}.?[0-9].?[0-9]{2}.?[0-9]{6}.?[0-9]";
     private static String REGEX_BARCODE = "[0-9]{8,13}";
 
-
     @Override
     public MediaServiceResult addBook(Book book) {
-        // TODO ISBN handling (Aufgabenstellung beachten)
         if (checkIsbn(book.getIsbn()) && !containsIsbn(book.getIsbn())) {
             DataStore.INSTANCE.addBook(book);
             LOGGER.info("New book added: " + book.toString());
@@ -56,7 +54,6 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult addDisc(Disc disc) {
-        // TODO Barcode handling (Aufgabenstellung beachten)
         if (checkBarcode(disc.getBarcode()) && !containsBarcode(disc.getBarcode())) {
             DataStore.INSTANCE.addDisc(disc);
             LOGGER.info("New disc added: " + disc.toString());
@@ -64,7 +61,6 @@ public class MediaServiceImpl implements MediaService {
         }
         return MediaServiceResult.NOT_FOUND;
     }
-
 
     private boolean containsIsbn(String isbn) {
         return Arrays.stream(DataStore.INSTANCE.getBooks()).anyMatch(i -> ((Book) i).getIsbn().equals(isbn));
@@ -94,14 +90,37 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public MediaServiceResult updateBook(Book book) {
-        // TODO Auto-generated method stub
-        return null;
+    public MediaServiceResult updateBook(String isbn, Book book) {
+        if (!checkIsbn(isbn) || !isbn.equals(book.getIsbn()))
+            return MediaServiceResult.NOT_FOUND;
+
+        Book old = (Book) DataStore.INSTANCE.getBook(isbn);
+
+        if (!old.getAuthor().equals(book.getAuthor()))
+            old.setAuthor(book.getAuthor());
+
+        if (!old.getTitle().equals(book.getTitle()))
+            old.setTitle(book.getTitle());
+
+        return MediaServiceResult.OK;
     }
 
     @Override
-    public MediaServiceResult updateDisc(Disc disc) {
-        // TODO Auto-generated method stub
-        return null;
+    public MediaServiceResult updateDisc(String barcode, Disc disc) {
+        if (!checkBarcode(barcode) || !barcode.equals(disc.getBarcode()))
+            return MediaServiceResult.NOT_FOUND;
+
+        Disc old = (Disc) DataStore.INSTANCE.getDisc(barcode);
+
+        if (!old.getDirector().equals(disc.getDirector()))
+            old.setDirector(disc.getDirector());
+
+        if (old.getFsk() != disc.getFsk())
+            old.setFsk(disc.getFsk());
+
+        if (!old.getTitle().equals(disc.getTitle()))
+            old.setTitle(disc.getTitle());
+
+        return MediaServiceResult.OK;
     }
 }

@@ -66,7 +66,54 @@ public class MediaServiceImplTest {
     }
 
     @Test
-    public void updateBook() throws Exception {
+    public void updateBookAuthor() throws Exception {
+        String isbn = "978-3836217798";
+        Book newBook = new Book("author", isbn, "title");
+        MediaService service = new MediaServiceImpl();
+        service.addBook(newBook);
+        Book upBook = new Book("author2", isbn, "title");
+        MediaServiceResult result = service.updateBook(isbn, upBook);
+        Assert.assertEquals(MediaServiceResult.OK, result);
+        Medium rB = service.getBook(isbn);
+        Assert.assertEquals(upBook, rB);
+    }
+
+    @Test
+    public void updateBookTitle() throws Exception {
+        String isbn = "978-3836217798";
+        Book newBook = new Book("author", isbn, "title");
+        MediaService service = new MediaServiceImpl();
+        service.addBook(newBook);
+        Book upBook = new Book("author", isbn, "title2");
+        MediaServiceResult result = service.updateBook(isbn, upBook);
+        Assert.assertEquals(MediaServiceResult.OK, result);
+        Medium rB = service.getBook(isbn);
+        Assert.assertEquals(upBook, rB);
+    }
+
+    @Test
+    public void updateBookBoth() throws Exception {
+        String isbn = "978-3836217798";
+        Book newBook = new Book("author", isbn, "title");
+        MediaService service = new MediaServiceImpl();
+        service.addBook(newBook);
+        Book upBook = new Book("author2", isbn, "title2");
+        MediaServiceResult result = service.updateBook(isbn, upBook);
+        Assert.assertEquals(MediaServiceResult.OK, result);
+        Medium rB = service.getBook(isbn);
+        Assert.assertEquals(upBook, rB);
+    }
+
+    @Test
+    public void updateBookFail() throws Exception {
+        String isbn = "978-3836217798";
+        String isbn_false = "978-3836277198";
+        Book newBook = new Book("author", isbn, "title");
+        MediaService service = new MediaServiceImpl();
+        service.addBook(newBook);
+        Book upBook = new Book("author2", isbn_false, "title2");
+        MediaServiceResult result = service.updateBook(isbn, upBook);
+        Assert.assertEquals(MediaServiceResult.NOT_FOUND, result);
     }
 
     @Test

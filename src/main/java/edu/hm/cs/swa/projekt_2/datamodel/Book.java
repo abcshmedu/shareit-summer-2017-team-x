@@ -52,4 +52,8 @@ public class Book extends Medium {
     public String getIsbn() {
         return isbn;
     }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 }

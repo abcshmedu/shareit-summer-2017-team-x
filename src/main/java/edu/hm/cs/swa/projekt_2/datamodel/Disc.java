@@ -60,5 +60,11 @@ public class Disc extends Medium {
         return fsk;
     }
 
+    public void setDirector(String director) {
+        this.director = director;
+    }
 
+    public void setFsk(int fsk) {
+        this.fsk = fsk;
+    }
 }

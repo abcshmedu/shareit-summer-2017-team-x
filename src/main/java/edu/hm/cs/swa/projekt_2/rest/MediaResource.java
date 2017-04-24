@@ -78,13 +78,20 @@ public class MediaResource {
     }
 
     @PUT
-    @Path("books")
+    @Path("books/{isbn}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateBook(Book updatedBook) {
-        LOGGER.info("rest request: update existing book");
+    public Response updateBook(@PathParam("isbn") String isbn, Book updatedBook) {
 
-        return null;
+        MediaService service = new MediaServiceImpl();
+        LOGGER.info("rest request: update Book. isbn: " + isbn);
+
+        try {
+            return Response.ok(service.updateBook(isbn, updatedBook)).build();
+        } catch (Exception ex) {
+            // error handling for later multi user
+        }
+        return Response.serverError().build();
     }
 
     @POST
@@ -138,13 +145,21 @@ public class MediaResource {
     }
 
     @PUT
-    @Path("discs")
+    @Path("discs/{barcode}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateDiscs(Disc updatedDisc) {
+    public Response updateDiscs(@PathParam("barcode") String barcode, Disc updatedDisc) {
+        MediaService service = new MediaServiceImpl();
+        if (!barcode.isEmpty()) {
+            LOGGER.info("rest request: update disc. barcode: " + barcode);
 
-        LOGGER.info("rest request: update existing book");
-
-        return null;
+            try {
+                return Response.ok(service.updateDisc(barcode, updatedDisc)).build();
+            } catch (Exception exc) {
+                // error handling for later multi user
+                LOGGER.info("failure: " + exc.getLocalizedMessage());
+            }
+        }
+        return Response.serverError().build();
     }
 }
