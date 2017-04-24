@@ -15,7 +15,8 @@ public class DataStore {
     private List<Medium> discList;
     private List<Copy> copyList;
 
-    private DataStore() {
+    protected DataStore() {
+    	
         bookList = new LinkedList<>();
         discList = new LinkedList<>();
         copyList = new LinkedList<>();

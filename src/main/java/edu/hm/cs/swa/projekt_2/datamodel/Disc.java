@@ -2,9 +2,9 @@ package edu.hm.cs.swa.projekt_2.datamodel;
 
 public class Disc extends Medium {
 
-    private String barcode;
-    private String director;
-    private int fsk;
+    private String barcode ="";
+    private String director ="";
+    private int fsk = 0;
 
     Disc() {
     }

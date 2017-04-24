@@ -2,8 +2,8 @@ package edu.hm.cs.swa.projekt_2.datamodel;
 
 public class Book extends Medium {
 
-    private String author;
-    private String isbn;
+    private String author ="";
+    private String isbn ="";
 
     Book() {
     }

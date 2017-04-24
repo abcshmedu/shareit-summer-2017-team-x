@@ -2,7 +2,7 @@ package edu.hm.cs.swa.projekt_2.datamodel;
 
 public abstract class Medium {
 
-    private String title;
+    private String title ="";
 
     Medium() {
     }
