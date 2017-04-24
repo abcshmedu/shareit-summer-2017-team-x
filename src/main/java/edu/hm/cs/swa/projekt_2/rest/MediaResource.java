@@ -4,6 +4,7 @@ import edu.hm.cs.swa.projekt_2.datamodel.Book;
 import edu.hm.cs.swa.projekt_2.datamodel.Disc;
 import edu.hm.cs.swa.projekt_2.logic.MediaService;
 import edu.hm.cs.swa.projekt_2.logic.MediaServiceImpl;
+import edu.hm.cs.swa.projekt_2.logic.MediaServiceResult;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -31,15 +32,10 @@ public class MediaResource {
 
         MediaService service = new MediaServiceImpl();
         try {
-            return Response.ok(service.addBook(newBook)).build();
+            MediaServiceResult result = service.addBook(newBook);
+            return Response.status(result.getStatus()).entity(result).build();
         } catch (Exception ex) {
             // error handling for later multi user
-
-            /*
-             Möglicher Fehler: Ungültige ISBN
-             Möglicher Fehler: ISBN bereits vorhanden
-             Möglicher Fehler: Autor oder Titel fehlt
-             */
         }
         return Response.serverError().build();
     }
@@ -87,7 +83,8 @@ public class MediaResource {
         LOGGER.info("rest request: update Book. isbn: " + isbn);
 
         try {
-            return Response.ok(service.updateBook(isbn, updatedBook)).build();
+            MediaServiceResult result = service.updateBook(isbn, updatedBook);
+            return Response.status(result.getStatus()).entity(result).build();
         } catch (Exception ex) {
             // error handling for later multi user
         }
@@ -103,7 +100,8 @@ public class MediaResource {
 
         MediaService service = new MediaServiceImpl();
         try {
-            return Response.ok(service.addDisc(newDisc)).build();
+            MediaServiceResult result = service.addDisc(newDisc);
+            return Response.status(result.getStatus()).entity(result).build();
         } catch (Exception ex) {
             // error handling for later multi user
         }

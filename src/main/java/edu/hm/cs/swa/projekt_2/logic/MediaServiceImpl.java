@@ -9,32 +9,31 @@ import java.util.Arrays;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-
 public class MediaServiceImpl implements MediaService {
 
     private Logger LOGGER = Logger.getLogger(MediaServiceResult.class.getName());
 
-    private static String REGEX_ISBN_13 = "[0-9]{3}.?[0-9].?[0-9]{2}.?[0-9]{6}.?[0-9]";
-    private static String REGEX_BARCODE = "[0-9]{8,13}";
-
     @Override
     public MediaServiceResult addBook(Book book) {
+        if (book == null)
+            return MediaServiceResult.MISSING_CONTENT;
         if (!checkIsbn(book.getIsbn()))
-            return MediaServiceResult.NOT_FOUND; // Ungülitge ISBN
+            return MediaServiceResult.ISBN_INVALID; // Ungülitge ISBN
         if (containsIsbn(book.getIsbn()))
-            return MediaServiceResult.NOT_FOUND; // ISBN bereits vorhanden
+            return MediaServiceResult.ALREADY_EXISTS; // ISBN bereits vorhanden
         if (book.getTitle() == null || book.getTitle().isEmpty())
-            return MediaServiceResult.NOT_FOUND; // Titel fehlt
+            return MediaServiceResult.MISSING_TITLE; // Titel fehlt
         if (book.getAuthor() == null || book.getAuthor().isEmpty())
-            return MediaServiceResult.NOT_FOUND; // Autor fehlt
+            return MediaServiceResult.MISSING_AUTHOR; // Autor fehlt
 
         DataStore.INSTANCE.addBook(book);
         LOGGER.info("New book added: " + book.toString());
 
-        return MediaServiceResult.OK;
+        return MediaServiceResult.CREATED;
     }
 
     static boolean checkIsbn(String isbn) {
+        final String REGEX_ISBN_13 = "[0-9]{3}.?[0-9].?[0-9]{2}.?[0-9]{6}.?[0-9]";
         if (isbn == null || !Pattern.matches(REGEX_ISBN_13, isbn))
             return false;
         int[] z = isbn.replaceAll("[^0-9]", "").chars().map(Character::getNumericValue).toArray();
@@ -42,6 +41,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     static boolean checkBarcode(String barcode) {
+        final String REGEX_BARCODE = "[0-9]{8,13}";
         if (barcode == null || !Pattern.matches(REGEX_BARCODE, barcode))
             return false;
         int[] z = barcode.replaceAll("[^0-9]", "").chars().map(Character::getNumericValue).toArray();
@@ -60,19 +60,20 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult addDisc(Disc disc) {
-
-        if (!checkIsbn(disc.getBarcode()))
-            return MediaServiceResult.NOT_FOUND; // Ungülitge Barcode
+        if (disc == null)
+            return MediaServiceResult.MISSING_CONTENT;
+        if (!checkBarcode(disc.getBarcode()))
+            return MediaServiceResult.BARCODE_INVALID; // Ungülitge Barcode
         if (containsBarcode(disc.getBarcode()))
-            return MediaServiceResult.NOT_FOUND; // Barcode bereits vorhanden
+            return MediaServiceResult.ALREADY_EXISTS; // Barcode bereits vorhanden
         if (disc.getTitle() == null || disc.getTitle().isEmpty())
-            return MediaServiceResult.NOT_FOUND; // Titel fehlt
+            return MediaServiceResult.MISSING_TITLE; // Titel fehlt
         if (disc.getDirector() == null || disc.getDirector().isEmpty())
-            return MediaServiceResult.NOT_FOUND; // Director fehlt
+            return MediaServiceResult.MISSING_DIRECTOR; // Director fehlt
 
         DataStore.INSTANCE.addDisc(disc);
         LOGGER.info("New disc added: " + disc.toString());
-        return MediaServiceResult.OK;
+        return MediaServiceResult.CREATED;
     }
 
     private boolean containsIsbn(String isbn) {
@@ -93,6 +94,7 @@ public class MediaServiceImpl implements MediaService {
         return DataStore.INSTANCE.getBook(isbn);
     }
 
+    @Override
     public Medium getDisc(String barcode) {
         return DataStore.INSTANCE.getDisc(barcode);
     }
@@ -102,17 +104,32 @@ public class MediaServiceImpl implements MediaService {
         return DataStore.INSTANCE.getDiscs();
     }
 
+    /**
+     * updates a single book.
+     *
+     * @param isbn identifier of a book
+     * @param book Book with only changing values
+     */
     @Override
     public MediaServiceResult updateBook(String isbn, Book book) {
-        if (!checkIsbn(isbn) || !isbn.equals(book.getIsbn()))
-            return MediaServiceResult.NOT_FOUND;
+        if (book == null)
+            return MediaServiceResult.MISSING_CONTENT;
+
+        if (!checkIsbn(isbn))
+            return MediaServiceResult.ISBN_INVALID;
 
         Book old = (Book) DataStore.INSTANCE.getBook(isbn);
 
-        if (!old.getAuthor().equals(book.getAuthor()))
+        if (old == null)
+            return MediaServiceResult.NOT_FOUND;
+
+        if (book.getIsbn() != null && !isbn.equals(book.getIsbn()))
+            return MediaServiceResult.ISBN_IMMUTABLE;
+
+        if (book.getAuthor() != null && !old.getAuthor().equals(book.getAuthor()))
             old.setAuthor(book.getAuthor());
 
-        if (!old.getTitle().equals(book.getTitle()))
+        if (book.getTitle() != null && !old.getTitle().equals(book.getTitle()))
             old.setTitle(book.getTitle());
 
         return MediaServiceResult.OK;
@@ -120,19 +137,29 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult updateDisc(String barcode, Disc disc) {
-        if (!checkBarcode(barcode) || !barcode.equals(disc.getBarcode()))
-            return MediaServiceResult.NOT_FOUND;
+        if (disc == null)
+            return MediaServiceResult.MISSING_CONTENT;
+
+        if (!checkBarcode(barcode))
+            return MediaServiceResult.BARCODE_INVALID;
 
         Disc old = (Disc) DataStore.INSTANCE.getDisc(barcode);
 
-        if (!old.getDirector().equals(disc.getDirector()))
+        if (old == null)
+            return MediaServiceResult.NOT_FOUND;
+
+        if (disc.getBarcode() != null && !barcode.equals(disc.getBarcode()))
+            return MediaServiceResult.BARCODE_IMMUTABLE;
+
+        if (disc.getDirector() != null && !old.getDirector().equals(disc.getDirector()))
             old.setDirector(disc.getDirector());
 
-        if (old.getFsk() != disc.getFsk())
-            old.setFsk(disc.getFsk());
-
-        if (!old.getTitle().equals(disc.getTitle()))
+        if (disc.getTitle() != null && !old.getTitle().equals(disc.getTitle()))
             old.setTitle(disc.getTitle());
+
+        // TODO: Check FSK. Default 0. problem cannot set fsk to 0. fsk -> Integer?
+        if (disc.getFsk() > 0 && old.getFsk() != disc.getFsk())
+            old.setFsk(disc.getFsk());
 
         return MediaServiceResult.OK;
     }
