@@ -20,144 +20,113 @@ import java.util.logging.Logger;
 @Path("media")
 public class MediaResource {
 
-    private Logger LOGGER = Logger.getLogger(MediaResource.class.getName());
+	private Logger LOGGER = Logger.getLogger(MediaResource.class.getName());
 
-    @POST
-    @Path("books")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createBook(Book newBook) {
+	@POST
+	@Path("books")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response createBook(Book newBook) {
 
-        LOGGER.info("rest request: add new book");
+		LOGGER.info("rest request: add new book");
 
-        MediaService service = new MediaServiceImpl();
-        try {
-            MediaServiceResult result = service.addBook(newBook);
-            return Response.status(result.getStatus()).entity(result).build();
-        } catch (Exception ex) {
-            // error handling for later multi user
-        }
-        return Response.serverError().build();
-    }
+		MediaService service = new MediaServiceImpl();
 
-    @GET
-    @Path("books/{isbn}")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response getBook(@PathParam("isbn") String isbn) {
+		MediaServiceResult result = service.addBook(newBook);
+		return Response.status(result.getStatus()).entity(result).build();
 
-        MediaService service = new MediaServiceImpl();
-        if (!isbn.isEmpty()) {
-            LOGGER.info("rest request: get single book. isbn: " + isbn);
+	}
 
-            try {
-                return Response.ok(service.getBook(isbn)).build();
-            } catch (Exception exc) {
-                // error handling for later multi user
-            }
-        }
-        return Response.serverError().build();
-    }
+	@GET
+	@Path("books/{isbn}")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Response getBook(@PathParam("isbn") String isbn) {
 
-    @GET
-    @Path("books")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response getBooks() {
-        MediaService service = new MediaServiceImpl();
-        LOGGER.info("rest request: get all books");
+		MediaService service = new MediaServiceImpl();
+		if (!isbn.isEmpty()) {
+			LOGGER.info("rest request: get single book. isbn: " + isbn);
 
-        try {
-            return Response.ok(service.getBooks()).build();
-        } catch (Exception ex) {
-            // error handling for later multi user
-        }
-        return Response.serverError().build();
-    }
+			return Response.ok(service.getBook(isbn)).build();
+		}
+		return Response.serverError().build();
+	}
 
-    @PUT
-    @Path("books/{isbn}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateBook(@PathParam("isbn") String isbn, Book updatedBook) {
+	@GET
+	@Path("books")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Response getBooks() {
+		MediaService service = new MediaServiceImpl();
+		LOGGER.info("rest request: get all books");
 
-        MediaService service = new MediaServiceImpl();
-        LOGGER.info("rest request: update Book. isbn: " + isbn);
+		return Response.ok(service.getBooks()).build();
 
-        try {
-            MediaServiceResult result = service.updateBook(isbn, updatedBook);
-            return Response.status(result.getStatus()).entity(result).build();
-        } catch (Exception ex) {
-            // error handling for later multi user
-        }
-        return Response.serverError().build();
-    }
+	}
 
-    @POST
-    @Path("discs")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createDisc(Disc newDisc) {
-        LOGGER.info("rest request: add new book");
+	@PUT
+	@Path("books/{isbn}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateBook(@PathParam("isbn") String isbn, Book updatedBook) {
 
-        MediaService service = new MediaServiceImpl();
-        try {
-            MediaServiceResult result = service.addDisc(newDisc);
-            return Response.status(result.getStatus()).entity(result).build();
-        } catch (Exception ex) {
-            // error handling for later multi user
-        }
-        return Response.serverError().build();
-    }
+		MediaService service = new MediaServiceImpl();
+		LOGGER.info("rest request: update Book. isbn: " + isbn);
 
-    @GET
-    @Path("discs")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response getDiscs() {
+		MediaServiceResult result = service.updateBook(isbn, updatedBook);
+		return Response.status(result.getStatus()).entity(result).build();
 
-        MediaService service = new MediaServiceImpl();
-        LOGGER.info("rest request: get all discs");
+	}
 
-        try {
-            return Response.ok(service.getDiscs()).build();
-        } catch (Exception ex) {
-            // error handling for later multi user
-        }
-        return Response.serverError().build();
-    }
+	@POST
+	@Path("discs")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response createDisc(Disc newDisc) {
+		LOGGER.info("rest request: add new book");
 
-    @GET
-    @Path("discs/{barcode}")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response getDisc(@PathParam("barcode") String barcode) {
-        MediaService service = new MediaServiceImpl();
-        if (!barcode.isEmpty()) {
-            LOGGER.info("rest request: get single disc. barcode: " + barcode);
+		MediaService service = new MediaServiceImpl();
 
-            try {
-                return Response.ok(service.getDisc(barcode)).build();
-            } catch (Exception exc) {
-                // error handling for later multi user
-                LOGGER.info("failure: " + exc.getLocalizedMessage());
-            }
-        }
-        return Response.serverError().build();
-    }
+		MediaServiceResult result = service.addDisc(newDisc);
+		return Response.status(result.getStatus()).entity(result).build();
 
-    @PUT
-    @Path("discs/{barcode}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateDiscs(@PathParam("barcode") String barcode, Disc updatedDisc) {
-        MediaService service = new MediaServiceImpl();
-        if (!barcode.isEmpty()) {
-            LOGGER.info("rest request: update disc. barcode: " + barcode);
+	}
 
-            try {
-                return Response.ok(service.updateDisc(barcode, updatedDisc)).build();
-            } catch (Exception exc) {
-                // error handling for later multi user
-                LOGGER.info("failure: " + exc.getLocalizedMessage());
-            }
-        }
-        return Response.serverError().build();
-    }
+	@GET
+	@Path("discs")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Response getDiscs() {
+
+		MediaService service = new MediaServiceImpl();
+		LOGGER.info("rest request: get all discs");
+
+		return Response.ok(service.getDiscs()).build();
+
+	}
+
+	@GET
+	@Path("discs/{barcode}")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Response getDisc(@PathParam("barcode") String barcode) {
+		MediaService service = new MediaServiceImpl();
+		if (!barcode.isEmpty()) {
+			LOGGER.info("rest request: get single disc. barcode: " + barcode);
+
+			return Response.ok(service.getDisc(barcode)).build();
+		}
+		return Response.serverError().build();
+	}
+
+	@PUT
+	@Path("discs/{barcode}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateDiscs(@PathParam("barcode") String barcode, Disc updatedDisc) {
+		MediaService service = new MediaServiceImpl();
+		if (!barcode.isEmpty()) {
+			LOGGER.info("rest request: update disc. barcode: " + barcode);
+
+			return Response.ok(service.updateDisc(barcode, updatedDisc)).build();
+
+		}
+		return Response.serverError().build();
+	}
 }
