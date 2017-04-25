@@ -3,6 +3,8 @@ package edu.hm.cs.swa.projekt_2.rest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import javax.ws.rs.core.Response;
+
 import org.junit.Test;
 
 import edu.hm.cs.swa.projekt_2.datamodel.Book;
@@ -17,12 +19,11 @@ public class MediaResourceTest {
 		
 		MediaResource media = new MediaResource();
 		
-		Book newBook = new Book("bert", "abcd", "test");
+		Book newBook = new Book("bert", "1231231231231", "test");
 		
-		media.createBook(newBook);
+		Response response = media.createBook(newBook);
 		
-		DataStore store = DataStore.INSTANCE;
-		assertNotNull(store.getBook(newBook.getIsbn()));
+		assertEquals(response.getStatus(),200);
 	}
 	
 	@Test

@@ -11,17 +11,17 @@ public class DiscTest {
 	private final String barcode ="abcde";
 	private final String director ="spielberg";
 	private final String title ="test";
-	private final int fsk = 5;
+	private final Integer fsk = 5;
 	
 	@Test
 	public void testDefaultConstructor() {
 		
 		Disc disc = new Disc();
 		
-		assertEquals(disc.getBarcode(), "");
-		assertEquals(disc.getDirector(), "");
-		assertEquals(disc.getTitle(), "");
-		assertEquals(disc.getFsk(), 0);
+		assertEquals(disc.getBarcode(), null);
+		assertEquals(disc.getDirector(), null);
+		assertEquals(disc.getTitle(), null);
+		assertEquals(disc.getFsk(), null);
 	}
 	
 	@Test

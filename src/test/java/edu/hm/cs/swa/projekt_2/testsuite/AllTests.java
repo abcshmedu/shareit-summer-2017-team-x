@@ -6,12 +6,11 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import edu.hm.cs.swa.projekt_2.datamodel.BookTest;
 import edu.hm.cs.swa.projekt_2.datamodel.CopyTest;
-import edu.hm.cs.swa.projekt_2.datamodel.Disc;
 import edu.hm.cs.swa.projekt_2.datamodel.DiscTest;
 import edu.hm.cs.swa.projekt_2.datamodel.MediumTest;
-import edu.hm.cs.swa.projekt_2.persistence.DataStore;
+import edu.hm.cs.swa.projekt_2.logic.MediaServiceImplTest;
 import edu.hm.cs.swa.projekt_2.persistence.DataStoreTest;
-import edu.hm.cs.swa.projekt_2.rest.MediaResource;
+import edu.hm.cs.swa.projekt_2.rest.MediaResourceTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({BookTest.class,
@@ -19,7 +18,8 @@ import edu.hm.cs.swa.projekt_2.rest.MediaResource;
 				DiscTest.class,
 				CopyTest.class,
 				DataStoreTest.class,
-				MediaResource.class})
+				MediaResourceTest.class,
+				MediaServiceImplTest.class})
 public class AllTests {
 
 }
