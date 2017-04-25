@@ -11,6 +11,16 @@ import org.junit.Test;
  * Created by christian on 23.04.17.
  */
 public class MediaServiceImplTest {
+    private final String author = "author";
+    private final String title = "title";
+
+    private final String isbn_valid = "978-3836217798";
+    private final String isbn_valid_2 = "978-3836277198";
+    private final String isbn_invalid = "978-3836217275";
+
+    private final String barcode_valid = "5449000096241";
+
+
     @Before
     public void setUp() {
         DataStore.INSTANCE.reset();
@@ -18,74 +28,80 @@ public class MediaServiceImplTest {
 
     @Test
     public void addBook() throws Exception {
-        Book newBook = new Book("author", "978-3836217798", "title");
+        Book newBook = new Book(author, isbn_valid, title);
         MediaService service = new MediaServiceImpl();
         service.addBook(newBook);
         Assert.assertEquals(1, DataStore.INSTANCE.getBooks().length);
     }
 
     @Test
-    public void addBookFalseIsbn() throws Exception {
-        Book newBook = new Book("author", "978-3836217275", "title");
+    public void addBookNull() throws Exception {
         MediaService service = new MediaServiceImpl();
-        service.addBook(newBook);
+        MediaServiceResult r = service.addBook(null);
+        Assert.assertEquals(MediaServiceResult.MISSING_CONTENT, r);
         Assert.assertEquals(0, DataStore.INSTANCE.getBooks().length);
     }
 
     @Test
-    public void addBookFalseTitleEmpty() throws Exception {
-        Book newBook = new Book("author", "978-3836217798", "");
+    public void addBookFalseIsbn() throws Exception {
+        Book newBook = new Book(author, isbn_invalid, title);
         MediaService service = new MediaServiceImpl();
         MediaServiceResult r = service.addBook(newBook);
-        Assert.assertEquals(MediaServiceResult.NOT_FOUND, r);
+        Assert.assertEquals(MediaServiceResult.ISBN_INVALID, r);
+        Assert.assertEquals(0, DataStore.INSTANCE.getBooks().length);
+
+    }
+
+    @Test
+    public void addBookFalseTitleEmpty() throws Exception {
+        Book newBook = new Book(author, isbn_valid, "");
+        MediaService service = new MediaServiceImpl();
+        MediaServiceResult r = service.addBook(newBook);
+        Assert.assertEquals(MediaServiceResult.MISSING_TITLE, r);
         Assert.assertEquals(0, DataStore.INSTANCE.getBooks().length);
     }
 
     @Test
     public void addBookFalseTitleNull() throws Exception {
-        Book newBook = new Book("author", "978-3836217798", null);
+        Book newBook = new Book(author, isbn_valid, null);
         MediaService service = new MediaServiceImpl();
         MediaServiceResult r = service.addBook(newBook);
-        Assert.assertEquals(MediaServiceResult.NOT_FOUND, r);
+        Assert.assertEquals(MediaServiceResult.MISSING_TITLE, r);
         Assert.assertEquals(0, DataStore.INSTANCE.getBooks().length);
     }
 
     @Test
     public void addBookFalseAuthorEmpty() throws Exception {
-        Book newBook = new Book("", "978-3836217275", "title");
+        Book newBook = new Book("", isbn_valid, title);
         MediaService service = new MediaServiceImpl();
         MediaServiceResult r = service.addBook(newBook);
-        Assert.assertEquals(MediaServiceResult.NOT_FOUND, r);
+        Assert.assertEquals(MediaServiceResult.MISSING_AUTHOR, r);
         Assert.assertEquals(0, DataStore.INSTANCE.getBooks().length);
     }
 
     @Test
     public void addBookFalseAuthorNull() throws Exception {
-        Book newBook = new Book(null, "978-3836217275", "title");
+        Book newBook = new Book(null, isbn_valid, title);
         MediaService service = new MediaServiceImpl();
         MediaServiceResult r = service.addBook(newBook);
-        Assert.assertEquals(MediaServiceResult.NOT_FOUND, r);
+        Assert.assertEquals(MediaServiceResult.MISSING_AUTHOR, r);
         Assert.assertEquals(0, DataStore.INSTANCE.getBooks().length);
     }
 
     @Test
     public void addBookTwice() throws Exception {
-        Book newBook = new Book("author", "978-3836217798", "title");
+        Book newBook = new Book(author, isbn_valid, title);
         MediaService service = new MediaServiceImpl();
         MediaServiceResult r1 = service.addBook(newBook);
         MediaServiceResult r2 = service.addBook(newBook);
         Assert.assertEquals(1, DataStore.INSTANCE.getBooks().length);
-        Assert.assertEquals(MediaServiceResult.OK, r1);
-        Assert.assertEquals(MediaServiceResult.NOT_FOUND, r2);
-    }
-
-    @Test
-    public void addDisc() throws Exception {
+        Assert.assertEquals(MediaServiceResult.CREATED, r1);
+        Assert.assertEquals(MediaServiceResult.ALREADY_EXISTS, r2);
     }
 
     @Test
     public void getBooks() throws Exception {
-        Book newBook = new Book("author", "978-3836217798", "title");
+        Book newBook = new Book(author, isbn_valid, title);
         MediaService service = new MediaServiceImpl();
         service.addBook(newBook);
         Assert.assertEquals(1, service.getBooks().length);
@@ -94,7 +110,7 @@ public class MediaServiceImplTest {
 
     @Test
     public void getBook() throws Exception {
-        Book newBook = new Book("author", "978-3836217798", "title");
+        Book newBook = new Book(author, isbn_valid, title);
         MediaService service = new MediaServiceImpl();
         service.addBook(newBook);
         Medium result = service.getBook(newBook.getIsbn());
@@ -102,66 +118,78 @@ public class MediaServiceImplTest {
     }
 
     @Test
-    public void getDisc() throws Exception {
-    }
-
-    @Test
-    public void getDiscs() throws Exception {
-    }
-
-    @Test
     public void updateBookAuthor() throws Exception {
-        String isbn = "978-3836217798";
-        Book newBook = new Book("author", isbn, "title");
+        Book newBook = new Book(author, isbn_valid, title);
         MediaService service = new MediaServiceImpl();
         service.addBook(newBook);
-        Book upBook = new Book("author2", isbn, "title");
-        MediaServiceResult result = service.updateBook(isbn, upBook);
+        Book upBook = new Book("author2", isbn_valid, title);
+        MediaServiceResult result = service.updateBook(isbn_valid, upBook);
         Assert.assertEquals(MediaServiceResult.OK, result);
-        Medium rB = service.getBook(isbn);
+        Medium rB = service.getBook(isbn_valid);
         Assert.assertEquals(upBook, rB);
     }
 
     @Test
-    public void updateBookTitle() throws Exception {
-        String isbn = "978-3836217798";
-        Book newBook = new Book("author", isbn, "title");
+    public void updateBookNull() throws Exception {
+        Book newBook = new Book(author, isbn_valid, title);
         MediaService service = new MediaServiceImpl();
         service.addBook(newBook);
-        Book upBook = new Book("author", isbn, "title2");
-        MediaServiceResult result = service.updateBook(isbn, upBook);
+
+        MediaServiceResult result = service.updateBook(isbn_valid, null);
+
+        Assert.assertEquals(MediaServiceResult.MISSING_CONTENT, result);
+        Medium rB = service.getBook(isbn_valid);
+        Assert.assertEquals(newBook, rB);
+    }
+
+    @Test
+    public void updateBookTitle() throws Exception {
+        Book newBook = new Book(author, isbn_valid, title);
+        MediaService service = new MediaServiceImpl();
+        service.addBook(newBook);
+        Book upBook = new Book(author, isbn_valid, "title2");
+        MediaServiceResult result = service.updateBook(isbn_valid, upBook);
         Assert.assertEquals(MediaServiceResult.OK, result);
-        Medium rB = service.getBook(isbn);
+        Medium rB = service.getBook(isbn_valid);
         Assert.assertEquals(upBook, rB);
     }
 
     @Test
     public void updateBookBoth() throws Exception {
-        String isbn = "978-3836217798";
-        Book newBook = new Book("author", isbn, "title");
+        Book newBook = new Book(author, isbn_valid, title);
         MediaService service = new MediaServiceImpl();
         service.addBook(newBook);
-        Book upBook = new Book("author2", isbn, "title2");
-        MediaServiceResult result = service.updateBook(isbn, upBook);
+        Book upBook = new Book("author2", isbn_valid, "title2");
+        MediaServiceResult result = service.updateBook(isbn_valid, upBook);
         Assert.assertEquals(MediaServiceResult.OK, result);
-        Medium rB = service.getBook(isbn);
+        Medium rB = service.getBook(isbn_valid);
         Assert.assertEquals(upBook, rB);
     }
 
     @Test
     public void updateBookFail() throws Exception {
-        String isbn = "978-3836217798";
-        String isbn_false = "978-3836277198";
-        Book newBook = new Book("author", isbn, "title");
+        Book newBook = new Book(author, isbn_valid, title);
         MediaService service = new MediaServiceImpl();
         service.addBook(newBook);
-        Book upBook = new Book("author2", isbn_false, "title2");
-        MediaServiceResult result = service.updateBook(isbn, upBook);
+        Book upBook = new Book("author2", isbn_valid_2, "title2");
+        MediaServiceResult result = service.updateBook(isbn_valid, upBook);
+        Assert.assertEquals(MediaServiceResult.ISBN_IMMUTABLE, result);
+    }
+
+    @Test
+    public void updateBookFailRessourceNotExists() throws Exception {
+        MediaService service = new MediaServiceImpl();
+        Book upBook = new Book("author2", isbn_valid, "title2");
+        MediaServiceResult result = service.updateBook(isbn_valid, upBook);
         Assert.assertEquals(MediaServiceResult.NOT_FOUND, result);
     }
 
     @Test
-    public void updateDisc() throws Exception {
+    public void updateBookFailInvalidIsbn() throws Exception {
+        MediaService service = new MediaServiceImpl();
+        Book upBook = new Book("author2", isbn_invalid, "title2");
+        MediaServiceResult result = service.updateBook(isbn_invalid, upBook);
+        Assert.assertEquals(MediaServiceResult.ISBN_INVALID, result);
     }
 
     @Test

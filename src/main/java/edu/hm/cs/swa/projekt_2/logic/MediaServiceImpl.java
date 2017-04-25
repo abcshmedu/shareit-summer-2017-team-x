@@ -70,6 +70,8 @@ public class MediaServiceImpl implements MediaService {
             return MediaServiceResult.MISSING_TITLE; // Titel fehlt
         if (disc.getDirector() == null || disc.getDirector().isEmpty())
             return MediaServiceResult.MISSING_DIRECTOR; // Director fehlt
+        if (disc.getFsk() == null)
+            return MediaServiceResult.MISSING_FSK;
 
         DataStore.INSTANCE.addDisc(disc);
         LOGGER.info("New disc added: " + disc.toString());
@@ -157,8 +159,7 @@ public class MediaServiceImpl implements MediaService {
         if (disc.getTitle() != null && !old.getTitle().equals(disc.getTitle()))
             old.setTitle(disc.getTitle());
 
-        // TODO: Check FSK. Default 0. problem cannot set fsk to 0. fsk -> Integer?
-        if (disc.getFsk() > 0 && old.getFsk() != disc.getFsk())
+        if (disc.getFsk() != null && !old.getFsk().equals(disc.getFsk()))
             old.setFsk(disc.getFsk());
 
         return MediaServiceResult.OK;
