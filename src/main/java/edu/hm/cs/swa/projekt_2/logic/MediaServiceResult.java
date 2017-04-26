@@ -10,7 +10,7 @@ public enum MediaServiceResult {
     OK(200, Response.Status.OK, "Request erfolgreich!"),
     CREATED(201, Response.Status.CREATED, "Ressource wurde erstellt!"),
     MISSING_CONTENT(400, Response.Status.BAD_REQUEST, "Notwendige Daten wurden nicht mit angegeben!"),
-    NOT_FOUND(404, Response.Status.NOT_FOUND, "Ressource konnte nicht gefunden werden"),
+    NOT_FOUND(404, Response.Status.NOT_FOUND, "Ressource konnte nicht gefunden werden!"),
     ISBN_INVALID(400, Response.Status.BAD_REQUEST, "ISBN ungültig!"),
     ISBN_IMMUTABLE(400, Response.Status.BAD_REQUEST, "ISBN kann nicht verändert werden!"),
     BARCODE_INVALID(400, Response.Status.BAD_REQUEST, "Barcode ungültig!"),

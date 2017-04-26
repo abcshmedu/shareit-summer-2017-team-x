@@ -1,18 +1,15 @@
 package edu.hm.cs.swa.projekt_2.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import javax.validation.constraints.AssertTrue;
-import javax.ws.rs.core.Response;
-
-import org.junit.Test;
-
 import edu.hm.cs.swa.projekt_2.datamodel.Book;
 import edu.hm.cs.swa.projekt_2.datamodel.Disc;
 import edu.hm.cs.swa.projekt_2.datamodel.Medium;
 import edu.hm.cs.swa.projekt_2.persistence.DataStore;
+import org.junit.Test;
+
+import javax.ws.rs.core.Response;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MediaResourceTest {
 
@@ -78,7 +75,7 @@ public class MediaResourceTest {
 		media.createBook(newBook);
 
 		Response response = media.getBook("");
-		assertEquals(500, response.getStatus());
+		assertEquals(404, response.getStatus());
 	}
 
 	@Test
