@@ -26,7 +26,7 @@ public class MediaResource {
     @POST
     @Path("books")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
     public Response createBook(Book newBook) {
 
         LOGGER.info("rest request: add new book");
@@ -40,7 +40,7 @@ public class MediaResource {
 
     @GET
     @Path("books/{isbn}")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
     public Response getBook(@PathParam("isbn") String isbn) {
 
         MediaService service = new MediaServiceImpl();
@@ -55,7 +55,7 @@ public class MediaResource {
 
     @GET
     @Path("books")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
     public Response getBooks() {
         MediaService service = new MediaServiceImpl();
         LOGGER.info("rest request: get all books");
@@ -67,7 +67,7 @@ public class MediaResource {
     @PUT
     @Path("books/{isbn}")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
     public Response updateBook(@PathParam("isbn") String isbn, Book updatedBook) {
 
         MediaService service = new MediaServiceImpl();
@@ -81,7 +81,7 @@ public class MediaResource {
     @POST
     @Path("discs")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
     public Response createDisc(Disc newDisc) {
         LOGGER.info("rest request: add new book");
 
@@ -94,7 +94,7 @@ public class MediaResource {
 
     @GET
     @Path("discs")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
     public Response getDiscs() {
 
         MediaService service = new MediaServiceImpl();
@@ -106,7 +106,7 @@ public class MediaResource {
 
     @GET
     @Path("discs/{barcode}")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
     public Response getDisc(@PathParam("barcode") String barcode) {
         MediaService service = new MediaServiceImpl();
         Medium medium = service.getDisc(barcode);
@@ -119,7 +119,7 @@ public class MediaResource {
     @PUT
     @Path("discs/{barcode}")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
     public Response updateDiscs(@PathParam("barcode") String barcode, Disc updatedDisc) {
         MediaService service = new MediaServiceImpl();
         if (!barcode.isEmpty()) {
