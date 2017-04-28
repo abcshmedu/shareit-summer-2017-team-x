@@ -18,7 +18,7 @@ public enum MediaServiceResult {
     ALREADY_EXISTS(400, Response.Status.BAD_REQUEST, "Ressource existiert bereits!"),
     MISSING_TITLE(400, Response.Status.BAD_REQUEST, "Titel fehlt!"),
     MISSING_AUTHOR(400, Response.Status.BAD_REQUEST, "Autor fehlt!"),
-    MISSING_DIRECTOR(400, Response.Status.BAD_REQUEST, "Director fehlt!"),
+    MISSING_DIRECTOR(400, Response.Status.BAD_REQUEST, "Direktor fehlt!"),
     MISSING_FSK(400, Response.Status.BAD_REQUEST, "FSK fehlt!");
 
     private final int code;
