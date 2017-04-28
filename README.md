@@ -36,15 +36,15 @@ fsk | Die angegebene [FSK](https://de.wikipedia.org/wiki/Freiwillige_Selbstkontr
 Hier folgt die genauere Beschreibung aller Schnittstellen des REST API:
 
 - books
-	- [http://host:port/shareit/media/books](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediabookspost) \[POST\] - neues Buch anlegen.
-	- http://host:port/shareit/media/books \[GET\] - alle Bücher im System.
-	- http://host:port/shareit/media/books/\{isbn\} \[GET\] -  Buch mit angegebener ISBN.
-	- http://host:port/shareit/media/books/\{isbn\} \[PUT\] - Buch mit angegebener ISBN aktualisieren. 
+	- [http://host:port/shareit/media/books](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediabooks-post) \[POST\] - neues Buch anlegen.
+	- [http://host:port/shareit/media/books](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediabooks-get) \[GET\] - alle Bücher im System.
+	- [http://host:port/shareit/media/books/\{isbn\}](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediabooksisbn-get) \[GET\] -  Buch mit angegebener ISBN.
+	- [http://host:port/shareit/media/books/\{isbn\}](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediabooksisbn-put) \[PUT\] - Buch mit angegebener ISBN aktualisieren. 
 - discs
-	- [http://host:port/shareit/media/discs](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediadiscspost) \[POST\] - neue CD anlegen.
-	- http://host:port/shareit/media/discs \[GET\] - alle CDs im System.
-	- http://host:port/shareit/media/discs/\{barcode\} \[GET\] -  CD mit angegebenem Barcode.
-	- http://host:port/shareit/media/discs/\{barcode\} \[PUT\] - CD mit angegebenem Barcode aktualisieren. 
+	- [http://host:port/shareit/media/discs](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediadiscs-post) \[POST\] - neue CD anlegen.
+	- [http://host:port/shareit/media/discs](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediadiscs-get) \[GET\] - alle CDs im System.
+	- [http://host:port/shareit/media/discs/\{barcode\}](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediadiscsbarcode-get) \[GET\] -  CD mit angegebenem Barcode.
+	- [http://host:port/shareit/media/discs/\{barcode\}](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediadiscsbarcode-put) \[PUT\] - CD mit angegebenem Barcode aktualisieren. 
 
 ### /shareit/media/books **POST**
 ##### Method: **POST**
