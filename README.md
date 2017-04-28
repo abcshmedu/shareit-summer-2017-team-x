@@ -23,12 +23,12 @@ isbn | Eine [ISBN-13](https://de.wikipedia.org/wiki/Internationale_Standardbuchn
 title | Titel des Buches.
 author | Autor des Buches.
 
-### CD (disc)
+### DVD (disc)
 Eigenschaft | Beschreibung
 ----------- | ------------
-barcode | Ein [Barcode](https://de.wikipedia.org/wiki/European_Article_Number) identifiziert eine CD eindeutig.
-title | Titel der CD.
-director | Direktor des Inhaltes auf der CD.
+barcode | Ein [Barcode](https://de.wikipedia.org/wiki/European_Article_Number) identifiziert eine DVD eindeutig.
+title | Titel der DVD.
+director | Direktor des Inhaltes auf der DVD.
 fsk | Die angegebene [FSK](https://de.wikipedia.org/wiki/Freiwillige_Selbstkontrolle_der_Filmwirtschaft) für den Inhalt.
 
 
@@ -41,10 +41,10 @@ Hier folgt die genauere Beschreibung aller Schnittstellen des REST API:
 	- [http://host:port/shareit/media/books/\{isbn\}](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediabooksisbn-get) \[GET\] -  Buch mit angegebener ISBN.
 	- [http://host:port/shareit/media/books/\{isbn\}](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediabooksisbn-put) \[PUT\] - Buch mit angegebener ISBN aktualisieren. 
 - discs
-	- [http://host:port/shareit/media/discs](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediadiscs-post) \[POST\] - neue CD anlegen.
-	- [http://host:port/shareit/media/discs](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediadiscs-get) \[GET\] - alle CDs im System.
-	- [http://host:port/shareit/media/discs/\{barcode\}](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediadiscsbarcode-get) \[GET\] -  CD mit angegebenem Barcode.
-	- [http://host:port/shareit/media/discs/\{barcode\}](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediadiscsbarcode-put) \[PUT\] - CD mit angegebenem Barcode aktualisieren. 
+	- [http://host:port/shareit/media/discs](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediadiscs-post) \[POST\] - neue DVD anlegen.
+	- [http://host:port/shareit/media/discs](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediadiscs-get) \[GET\] - alle DVDs im System.
+	- [http://host:port/shareit/media/discs/\{barcode\}](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediadiscsbarcode-get) \[GET\] -  DVD mit angegebenem Barcode.
+	- [http://host:port/shareit/media/discs/\{barcode\}](https://github.com/abcshmedu/shareit-summer-2017-team-x#shareitmediadiscsbarcode-put) \[PUT\] - DVD mit angegebenem Barcode aktualisieren. 
 
 ### /shareit/media/books **POST**
 ##### Method: **POST**
@@ -102,7 +102,7 @@ Wird versucht ein Buch zu erstellen, das bereits existiert, so wird der Request 
  
 ### /shareit/media/discs **POST**
 ##### Method: **POST**
-Erstellt eine CD mit den angegebenen Daten.
+Erstellt eine DVD mit den angegebenen Daten.
 ##### Beispiel: 
 ###### Request
 ```
@@ -112,7 +112,7 @@ Host: shareit-summer-2017-team-x.herokuapp.com
 Connection: close
 Content-Length: 66
   
-{"title":"testdisc","director":"TestDirector","barcode":"0123456789","fsk":16}
+{"title":"testdisc","director":"TestDirector","barcode":"5449000096241","fsk":16}
 ```
 ###### Response
 ```
@@ -125,7 +125,7 @@ Via: 1.1 vegur
   
 {"code":201,"status":"CREATED","additionalMsg":"Ressource wurde erstellt!"}
 ```
-Wird versucht eine CD zu erstellen, die bereits existiert, so wird der Request mit folgendem Response beantwortet:
+Wird versucht eine DVD zu erstellen, die bereits existiert, so wird der Request mit folgendem Response beantwortet:
  ```
  HTTP/1.1 400 Bad Request
  Connection: close
