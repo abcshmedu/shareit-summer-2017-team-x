@@ -1,14 +1,28 @@
 package edu.hm.cs.swa.projekt_2.datamodel;
 
+/**
+ * Representing a Disc, derived from {@linkplain Medium}
+ */
 public class Disc extends Medium {
 
     private String barcode;
     private String director;
     private Integer fsk;
 
+    /**
+     * Default constructor for serialization
+     */
     Disc() {
     }
 
+    /**
+     * Parameterized constructor for creating a new element
+     * 
+     * @param barcode
+     * @param director
+     * @param fsk
+     * @param title
+     */
     public Disc(String barcode, String director, int fsk, String title) {
         super(title);
 
@@ -48,22 +62,44 @@ public class Disc extends Medium {
                 '}';
     }
 
+    /**
+     * Returns the barcode, this can be null.
+     * @return
+     */
     public String getBarcode() {
         return barcode;
     }
 
+    /**
+     * Returns the director, this can be null
+     * @return
+     */
     public String getDirector() {
         return director;
     }
 
+    /**
+     * Returns the FSK. If not set, it returns 0
+     * @return
+     */
     public Integer getFsk() {
         return fsk;
     }
 
+    /**
+     * Set the director
+     * 
+     * @param director
+     */
     public void setDirector(String director) {
         this.director = director;
     }
 
+    /**
+     * Set the FSK
+     * 
+     * @param fsk
+     */
     public void setFsk(int fsk) {
         this.fsk = fsk;
     }

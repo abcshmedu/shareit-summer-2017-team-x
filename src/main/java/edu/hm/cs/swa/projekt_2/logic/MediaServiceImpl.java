@@ -9,6 +9,10 @@ import java.util.Arrays;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+/**
+ * this is an implementation of the {@linkplain MediaService} interface.
+ *
+ */
 public class MediaServiceImpl implements MediaService {
 
     private Logger LOGGER = Logger.getLogger(MediaServiceResult.class.getName());

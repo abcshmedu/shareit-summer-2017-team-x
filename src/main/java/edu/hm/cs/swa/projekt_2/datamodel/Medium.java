@@ -1,12 +1,23 @@
 package edu.hm.cs.swa.projekt_2.datamodel;
 
+/**
+ * Abstract superclass to bundle common informations
+ *
+ */
 public abstract class Medium {
 
     private String title;
 
+    /**
+     * Default constructor for serialization
+     */
     Medium() {
     }
 
+    /**
+     * Parameterized constructor for creating a new element
+     * @param title
+     */
     public Medium(String title) {
         this.title = title;
     }
@@ -33,10 +44,18 @@ public abstract class Medium {
                 '}';
     }
 
+    /**
+     * Returns the title, this can be null;
+     * @return
+     */
     public String getTitle() {
         return this.title;
     }
 
+    /**
+     * Sets the title.
+     * @param title
+     */
     public void setTitle(String title) {
         this.title = title;
     }

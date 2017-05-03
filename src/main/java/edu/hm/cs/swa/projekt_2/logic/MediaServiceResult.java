@@ -4,9 +4,18 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.ws.rs.core.Response;
 
+/**
+ * This class acts as a serializable result object for the REST API.
+ * It contains a status code and an additional message that can be send to the client.
+ * 
+ *
+ */
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum MediaServiceResult {
 
+	/**
+	 * Status code definition
+	 */
     OK(200, Response.Status.OK, "Request erfolgreich!"),
     CREATED(201, Response.Status.CREATED, "Ressource wurde erstellt!"),
     MISSING_CONTENT(400, Response.Status.BAD_REQUEST, "Notwendige Daten wurden nicht mit angegeben!"),
@@ -26,20 +35,40 @@ public enum MediaServiceResult {
     private final String additionalMsg;
 
 
+    /**
+     * Creates a new MediaResult. this contains of a code, a status and a message.
+     * 
+     * @param code
+     * @param status
+     * @param msg
+     */
     MediaServiceResult(int code, Response.Status status, String msg) {
         this.code = code;
         this.status = status;
         this.additionalMsg = msg;
     }
 
+    /**
+     * Returns the code. This is an HTTP code
+     * 
+     * @return
+     */
     public int getCode() {
         return code;
     }
 
+    /**
+     * Returns the status.
+     * @return
+     */
     public Response.Status getStatus() {
         return status;
     }
 
+    /**
+     * Returns a possible additional message
+     * @return
+     */
     public String getAdditionalMsg() {
         return additionalMsg;
     }

@@ -18,6 +18,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.logging.Logger;
 
+/**
+ * This represents the REST API as described in the readme file.
+ * Please have a look at this file for detailed information about the methods
+ * and how to use them.
+ */
 @Path("media")
 public class MediaResource {
 

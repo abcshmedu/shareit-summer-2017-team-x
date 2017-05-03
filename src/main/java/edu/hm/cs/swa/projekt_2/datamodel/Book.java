@@ -1,13 +1,26 @@
 package edu.hm.cs.swa.projekt_2.datamodel;
 
+/**
+ * Representing a Book, derived from {@linkplain Medium}
+ */
 public class Book extends Medium {
 
     private String author;
     private String isbn;
 
+    /**
+     * Default constructor for serialization
+     */
     Book() {
     }
 
+    /**
+     * Parameterized constructor for creating a new element
+     * 
+     * @param author
+     * @param isbn
+     * @param title
+     */
     public Book(String author, String isbn, String title) {
         super(title);
         // TODO Auto-generated constructor stub
@@ -45,14 +58,29 @@ public class Book extends Medium {
                 '}';
     }
 
+    /**
+     * Returns the author or null, if none was set
+     * 
+     * @return String the author
+     */
     public String getAuthor() {
         return author;
     }
 
+    /**
+     * Returns the ISBN or null, if none was set
+     * 
+     * @return String the ISBN
+     */
     public String getIsbn() {
         return isbn;
     }
 
+    /**
+     * Sets the author for this book. Can be null
+     * 
+     * @param author
+     */
     public void setAuthor(String author) {
         this.author = author;
     }
