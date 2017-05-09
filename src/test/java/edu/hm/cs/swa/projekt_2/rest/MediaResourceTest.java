@@ -13,203 +13,202 @@ import static org.junit.Assert.assertTrue;
 
 public class MediaResourceTest {
 
-	private final String ISBN = "978-3836217798";
-	private final String ISBN2 = "879-3836217798";
-	private final String author = "bert";
-	private final String author2 = "karl";
-	private final String title = "testbuch";
-	private final String title2 = "kinderbuch";
-	
-	private final String barcode ="5449000096241";
-	private final String barcode2 ="4003994155486";
-	private final String director ="steven";
-	private final String director2 ="spielberg";
-	
-	
+    private final String ISBN = "978-3836217798";
+    private final String ISBN2 = "879-3836217798";
+    private final String author = "bert";
+    private final String author2 = "karl";
+    private final String title = "testbuch";
+    private final String title2 = "kinderbuch";
 
-	@Test
-	public void testCreateBook() {
+    private final String barcode = "5449000096241";
+    private final String barcode2 = "4003994155486";
+    private final String director = "steven";
+    private final String director2 = "spielberg";
 
-		MediaResource media = new MediaResource();
-		DataStore.INSTANCE.reset();
 
-		Book newBook = new Book(author, ISBN, title);
+    @Test
+    public void testCreateBook() {
 
-		Response response = media.createBook(newBook);
+        MediaResource media = new MediaResource();
+        DataStore.INSTANCE.reset();
 
-		assertEquals(response.getStatus(), 201);
-	}
+        Book newBook = new Book(author, ISBN, title);
 
-	@Test
-	public void testGetBook() {
+        Response response = media.createBook(newBook);
 
-		MediaResource media = new MediaResource();
-		DataStore.INSTANCE.reset();
+        assertEquals(response.getStatus(), 201);
+    }
 
-		Book newBook = new Book(author, ISBN, title);
+    @Test
+    public void testGetBook() {
 
-		media.createBook(newBook);
+        MediaResource media = new MediaResource();
+        DataStore.INSTANCE.reset();
 
-		Response response = media.getBook(ISBN);
-		assertEquals(200, response.getStatus());
+        Book newBook = new Book(author, ISBN, title);
 
-		Object o = response.getEntity();
-		assertTrue(o instanceof Book);
+        media.createBook(newBook);
 
-		Book book = (Book) o;
+        Response response = media.getBook(ISBN);
+        assertEquals(200, response.getStatus());
 
-		assertEquals(author, book.getAuthor());
-		assertEquals(ISBN, book.getIsbn());
-		assertEquals(title, book.getTitle());
+        Object o = response.getEntity();
+        assertTrue(o instanceof Book);
 
-	}
+        Book book = (Book) o;
 
-	@Test
-	public void testGetBookNoISBN() {
+        assertEquals(author, book.getAuthor());
+        assertEquals(ISBN.replaceAll("[^0-9]", ""), book.getIsbn());
+        assertEquals(title, book.getTitle());
 
-		MediaResource media = new MediaResource();
-		DataStore.INSTANCE.reset();
+    }
 
-		Book newBook = new Book(author, ISBN, title);
+    @Test
+    public void testGetBookNoISBN() {
 
-		media.createBook(newBook);
+        MediaResource media = new MediaResource();
+        DataStore.INSTANCE.reset();
 
-		Response response = media.getBook("");
-		assertEquals(404, response.getStatus());
-	}
+        Book newBook = new Book(author, ISBN, title);
 
-	@Test
-	public void testGetBooks() {
+        media.createBook(newBook);
 
-		MediaResource media = new MediaResource();
-		DataStore.INSTANCE.reset();
+        Response response = media.getBook("");
+        assertEquals(404, response.getStatus());
+    }
 
-		Book newBook = new Book(author, ISBN, title);
-		media.createBook(newBook);
+    @Test
+    public void testGetBooks() {
 
-		Book newBook2 = new Book(author + "1", ISBN2, title + "1");
-		media.createBook(newBook2);
+        MediaResource media = new MediaResource();
+        DataStore.INSTANCE.reset();
 
-		Response response = media.getBooks();
+        Book newBook = new Book(author, ISBN, title);
+        media.createBook(newBook);
 
-		assertEquals(response.getStatus(), 200);
+        Book newBook2 = new Book(author + "1", ISBN2, title + "1");
+        media.createBook(newBook2);
 
-		Object o = response.getEntity();
+        Response response = media.getBooks();
 
-		assertTrue(o instanceof Medium[]);
+        assertEquals(response.getStatus(), 200);
 
-		Medium[] books = (Medium[]) o;
+        Object o = response.getEntity();
 
-		assertEquals(2, books.length);
+        assertTrue(o instanceof Medium[]);
 
-	}
+        Medium[] books = (Medium[]) o;
 
-	@Test
-	public void testUpdateBook() {
+        assertEquals(2, books.length);
 
-		MediaResource media = new MediaResource();
-		DataStore.INSTANCE.reset();
+    }
 
-		Book newBook = new Book(author, ISBN, title);
-		media.createBook(newBook);
-		
-		Book newBook2 = new Book(author2, ISBN, title2);
-		
-		Response response = media.updateBook(ISBN,newBook2);
-		
-		assertEquals(200, response.getStatus());
-		
-		response = media.getBook(ISBN);
-		Book book = (Book) response.getEntity();
-		
-		assertEquals(author2, book.getAuthor());
-		assertEquals(title2, book.getTitle());
-	
-	}
-	
-	@Test
-	public void testCreateDisc() {
+    @Test
+    public void testUpdateBook() {
 
-		MediaResource media = new MediaResource();
-		DataStore.INSTANCE.reset();
+        MediaResource media = new MediaResource();
+        DataStore.INSTANCE.reset();
 
-		Disc disc = new Disc(barcode, director, 10, title);
+        Book newBook = new Book(author, ISBN, title);
+        media.createBook(newBook);
 
-		Response response = media.createDisc(disc);
+        Book newBook2 = new Book(author2, ISBN, title2);
 
-		assertEquals(response.getStatus(), 201);
-	}
+        Response response = media.updateBook(ISBN, newBook2);
 
-	@Test
-	public void testGetDiscBarcode() {
+        assertEquals(200, response.getStatus());
 
-		MediaResource media = new MediaResource();
-		DataStore.INSTANCE.reset();
+        response = media.getBook(ISBN);
+        Book book = (Book) response.getEntity();
 
-		Disc newDisc = new Disc(barcode, director, 10, title);
+        assertEquals(author2, book.getAuthor());
+        assertEquals(title2, book.getTitle());
 
-		media.createDisc(newDisc);
+    }
 
-		Response response = media.getDisc(barcode);
-		assertEquals(200, response.getStatus());
+    @Test
+    public void testCreateDisc() {
 
-		Object o = response.getEntity();
-		assertTrue(o instanceof Disc);
+        MediaResource media = new MediaResource();
+        DataStore.INSTANCE.reset();
 
-		Disc disc = (Disc)o;
+        Disc disc = new Disc(barcode, director, 10, title);
 
-		assertEquals(director, disc.getDirector());
-		assertEquals(title, disc.getTitle());
+        Response response = media.createDisc(disc);
 
-	}
-	
-	@Test
-	public void testGetDisc() {
+        assertEquals(response.getStatus(), 201);
+    }
 
-		MediaResource media = new MediaResource();
-		DataStore.INSTANCE.reset();
+    @Test
+    public void testGetDiscBarcode() {
 
-		Disc newDisc = new Disc(barcode, director, 10, title);
-		media.createDisc(newDisc);
-		
-		Disc newDisc2 = new Disc(barcode2, director2, 10, title2);
-		media.createDisc(newDisc2);
-		
-		Response response = media.getDiscs();
-		
-		assertEquals(200, response.getStatus());
-		
-		Object o = response.getEntity();
-		
-		assertTrue(o instanceof Medium[]);
-		
-		Medium[]  medien = (Medium[]) o;
-		
-		assertEquals(2, medien.length);
-	}
-	
-	@Test
-	public void testUpdateDisc() {
+        MediaResource media = new MediaResource();
+        DataStore.INSTANCE.reset();
 
-		MediaResource media = new MediaResource();
-		DataStore.INSTANCE.reset();
+        Disc newDisc = new Disc(barcode, director, 10, title);
 
-		Disc newDisc = new Disc(barcode, director, 10, title);
-		media.createDisc(newDisc);
-		
-		Disc newDisc2 = new Disc(barcode, director2, 10, title2);
-	
-		
-		Response response = media.updateDiscs(barcode,newDisc2);
-		
-		assertEquals(200, response.getStatus());
-		
-		response = media.getDisc(barcode);
-		Disc disc = (Disc) response.getEntity();
-		
-		assertEquals(director2, disc.getDirector());
-		assertEquals(title2,disc.getTitle());
-	
-	}
+        media.createDisc(newDisc);
+
+        Response response = media.getDisc(barcode);
+        assertEquals(200, response.getStatus());
+
+        Object o = response.getEntity();
+        assertTrue(o instanceof Disc);
+
+        Disc disc = (Disc) o;
+
+        assertEquals(director, disc.getDirector());
+        assertEquals(title, disc.getTitle());
+
+    }
+
+    @Test
+    public void testGetDisc() {
+
+        MediaResource media = new MediaResource();
+        DataStore.INSTANCE.reset();
+
+        Disc newDisc = new Disc(barcode, director, 10, title);
+        media.createDisc(newDisc);
+
+        Disc newDisc2 = new Disc(barcode2, director2, 10, title2);
+        media.createDisc(newDisc2);
+
+        Response response = media.getDiscs();
+
+        assertEquals(200, response.getStatus());
+
+        Object o = response.getEntity();
+
+        assertTrue(o instanceof Medium[]);
+
+        Medium[] medien = (Medium[]) o;
+
+        assertEquals(2, medien.length);
+    }
+
+    @Test
+    public void testUpdateDisc() {
+
+        MediaResource media = new MediaResource();
+        DataStore.INSTANCE.reset();
+
+        Disc newDisc = new Disc(barcode, director, 10, title);
+        media.createDisc(newDisc);
+
+        Disc newDisc2 = new Disc(barcode, director2, 10, title2);
+
+
+        Response response = media.updateDiscs(barcode, newDisc2);
+
+        assertEquals(200, response.getStatus());
+
+        response = media.getDisc(barcode);
+        Disc disc = (Disc) response.getEntity();
+
+        assertEquals(director2, disc.getDirector());
+        assertEquals(title2, disc.getTitle());
+
+    }
 
 }

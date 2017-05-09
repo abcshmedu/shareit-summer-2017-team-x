@@ -102,12 +102,12 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public Medium getBook(String isbn) {
-        return DataStore.INSTANCE.getBook(isbn);
+        return DataStore.INSTANCE.getBook(isbn.replaceAll("[^0-9]", ""));
     }
 
     @Override
     public Medium getDisc(String barcode) {
-        return DataStore.INSTANCE.getDisc(barcode);
+        return DataStore.INSTANCE.getDisc(barcode.replaceAll("[^0-9]", ""));
     }
 
     @Override
@@ -123,6 +123,7 @@ public class MediaServiceImpl implements MediaService {
      */
     @Override
     public MediaServiceResult updateBook(String isbn, Book book) {
+        isbn = isbn.replaceAll("[^0-9]", "");
         if (book == null)
             return MediaServiceResult.MISSING_CONTENT;
 
@@ -134,6 +135,7 @@ public class MediaServiceImpl implements MediaService {
         if (old == null)
             return MediaServiceResult.NOT_FOUND;
 
+        book.setIsbn(book.getIsbn().replaceAll("[^0-9]", ""));
         if (book.getIsbn() != null && !isbn.equals(book.getIsbn()))
             return MediaServiceResult.ISBN_IMMUTABLE;
 
@@ -148,6 +150,7 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult updateDisc(String barcode, Disc disc) {
+        barcode = barcode.replaceAll("[^0-9]", "");
         if (disc == null)
             return MediaServiceResult.MISSING_CONTENT;
 
@@ -158,6 +161,8 @@ public class MediaServiceImpl implements MediaService {
 
         if (old == null)
             return MediaServiceResult.NOT_FOUND;
+
+        disc.setBarcode(disc.getBarcode().replaceAll("[^0-9]", ""));
 
         if (disc.getBarcode() != null && !barcode.equals(disc.getBarcode()))
             return MediaServiceResult.BARCODE_IMMUTABLE;
