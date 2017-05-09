@@ -17,7 +17,7 @@ public class Disc extends Medium {
 
     /**
      * Parameterized constructor for creating a new element
-     * 
+     *
      * @param barcode
      * @param director
      * @param fsk
@@ -64,6 +64,7 @@ public class Disc extends Medium {
 
     /**
      * Returns the barcode, this can be null.
+     *
      * @return
      */
     public String getBarcode() {
@@ -71,7 +72,17 @@ public class Disc extends Medium {
     }
 
     /**
+     * Sets the Barcode.
+     *
+     * @param barcode String of the new Barcode
+     */
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
+    /**
      * Returns the director, this can be null
+     *
      * @return
      */
     public String getDirector() {
@@ -80,6 +91,7 @@ public class Disc extends Medium {
 
     /**
      * Returns the FSK. If not set, it returns 0
+     *
      * @return
      */
     public Integer getFsk() {
@@ -88,7 +100,7 @@ public class Disc extends Medium {
 
     /**
      * Set the director
-     * 
+     *
      * @param director
      */
     public void setDirector(String director) {
@@ -97,7 +109,7 @@ public class Disc extends Medium {
 
     /**
      * Set the FSK
-     * 
+     *
      * @param fsk
      */
     public void setFsk(int fsk) {

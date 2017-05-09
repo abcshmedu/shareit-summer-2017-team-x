@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 
 /**
  * this is an implementation of the {@linkplain MediaService} interface.
- *
  */
 public class MediaServiceImpl implements MediaService {
 
@@ -23,6 +22,9 @@ public class MediaServiceImpl implements MediaService {
             return MediaServiceResult.MISSING_CONTENT;
         if (!checkIsbn(book.getIsbn()))
             return MediaServiceResult.ISBN_INVALID; // Ungülitge ISBN
+
+        // ISBN wird vereinheitlicht um unterschiedliche Füllzeichen herauszufiltern.
+        book.setIsbn(book.getIsbn().replaceAll("[^0-9]", ""));
         if (containsIsbn(book.getIsbn()))
             return MediaServiceResult.ALREADY_EXISTS; // ISBN bereits vorhanden
         if (book.getTitle() == null || book.getTitle().isEmpty())
@@ -68,6 +70,9 @@ public class MediaServiceImpl implements MediaService {
             return MediaServiceResult.MISSING_CONTENT;
         if (!checkBarcode(disc.getBarcode()))
             return MediaServiceResult.BARCODE_INVALID; // Ungülitge Barcode
+
+        // Barcode wird vereinheitlicht um unterschiedliche Füllzeichen herauszufiltern.
+        disc.setBarcode(disc.getBarcode().replaceAll("[^0-9]", ""));
         if (containsBarcode(disc.getBarcode()))
             return MediaServiceResult.ALREADY_EXISTS; // Barcode bereits vorhanden
         if (disc.getTitle() == null || disc.getTitle().isEmpty())

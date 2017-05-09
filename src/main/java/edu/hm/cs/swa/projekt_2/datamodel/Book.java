@@ -6,6 +6,8 @@ package edu.hm.cs.swa.projekt_2.datamodel;
 public class Book extends Medium {
 
     private String author;
+
+
     private String isbn;
 
     /**
@@ -16,7 +18,7 @@ public class Book extends Medium {
 
     /**
      * Parameterized constructor for creating a new element
-     * 
+     *
      * @param author
      * @param isbn
      * @param title
@@ -60,7 +62,7 @@ public class Book extends Medium {
 
     /**
      * Returns the author or null, if none was set
-     * 
+     *
      * @return String the author
      */
     public String getAuthor() {
@@ -69,7 +71,7 @@ public class Book extends Medium {
 
     /**
      * Returns the ISBN or null, if none was set
-     * 
+     *
      * @return String the ISBN
      */
     public String getIsbn() {
@@ -77,8 +79,17 @@ public class Book extends Medium {
     }
 
     /**
+     * Changes the ISBN.
+     *
+     * @param isbn String of the new ISBN
+     */
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    /**
      * Sets the author for this book. Can be null
-     * 
+     *
      * @param author
      */
     public void setAuthor(String author) {
