@@ -21,20 +21,22 @@ public class ValidationService {
 		
 		try {
 			HttpResponse<JsonNode> jsonResponse = Unirest.get("http://"+Configuration.AUTH_SERVER_URL+":"+Configuration.AUTH_SERVER_PORT+"/shareit/validate/token")
-					  .queryString("tokenID", token)
+					  .queryString("tokenID", token.getID())
 					  .queryString("authID",authorizationID.getAuthorizationID())
 					  .asJson();
 			
 			JSONObject jsonObj =  jsonResponse.getBody().getObject();
-			String code = jsonObj.getString("code");
+			int code = jsonObj.getInt("code");
 			
 			
 			ValidationResult myObject;
-			if(code.equals("200")){
+			if(code == 200){
 				myObject = ValidationResult.AUTHORIZATION_OK;
+			}else if(code ==403){
+				myObject = ValidationResult.AUTHORIZATION_MISSING;
 			}
 			else{
-				myObject = ValidationResult.AUTHORIZATION_MISSING;
+				myObject = ValidationResult.TOKEN_INVALIDE;
 			}
 			
 			

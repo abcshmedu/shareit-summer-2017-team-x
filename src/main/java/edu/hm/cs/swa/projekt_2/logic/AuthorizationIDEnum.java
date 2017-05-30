@@ -4,8 +4,8 @@ public enum AuthorizationIDEnum {
 
 	
 	
-	BOOK_READ("book.read"),
-	BOOK_WRITE("book.write");
+	BOOK_READ("media.book.get"),
+	BOOK_WRITE("media.book.update");
 	
 	private final String authorizationID;
 	

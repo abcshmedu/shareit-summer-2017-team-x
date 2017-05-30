@@ -15,7 +15,7 @@ public class DemoApplication {
 		
 		ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_READ);
 		
-		
+		System.out.println(valResult);
 	}
 
 }
