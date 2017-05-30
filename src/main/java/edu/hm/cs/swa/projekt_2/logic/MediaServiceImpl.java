@@ -19,6 +19,12 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult addBook(Book book,Token token) {
+    	
+    	ValidationResult valResult =ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_WRITE);
+    	if(valResult != ValidationResult.AUTHORIZATION_OK){
+    		return MediaServiceResult.NO_AUTHORIZATION;
+    	}
+    	
         if (book == null)
             return MediaServiceResult.MISSING_CONTENT;
         if (!checkIsbn(book.getIsbn()))
@@ -67,6 +73,12 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult addDisc(Disc disc,Token token) {
+    	
+    	ValidationResult valResult =ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.DISC_WRITE);
+    	if(valResult != ValidationResult.AUTHORIZATION_OK){
+    		return MediaServiceResult.NO_AUTHORIZATION;
+    	}
+    	
         if (disc == null)
             return MediaServiceResult.MISSING_CONTENT;
         if (!checkBarcode(disc.getBarcode()))
@@ -98,21 +110,45 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public Medium[] getBooks(Token token) {
+    	
+    	ValidationResult valResult =ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_READ);
+    	if(valResult != ValidationResult.AUTHORIZATION_OK){
+    		return null;
+    	}
+    	
         return DataStore.INSTANCE.getBooks();
     }
 
     @Override
     public Medium getBook(String isbn,Token token) {
+    	
+    	ValidationResult valResult =ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_READ
+    		);
+    	if(valResult != ValidationResult.AUTHORIZATION_OK){
+    		return null;
+    	}
+    	
         return DataStore.INSTANCE.getBook(isbn.replaceAll("[^0-9]", ""));
     }
 
     @Override
     public Medium getDisc(String barcode,Token token) {
+    	
+    	ValidationResult valResult =ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.DISC_READ);
+    	if(valResult != ValidationResult.AUTHORIZATION_OK){
+    		return null;
+    	}
         return DataStore.INSTANCE.getDisc(barcode.replaceAll("[^0-9]", ""));
     }
 
     @Override
     public Medium[] getDiscs(Token token) {
+    	
+    	ValidationResult valResult =ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.DISC_READ);
+    	if(valResult != ValidationResult.AUTHORIZATION_OK){
+    		return null;
+    	}
+    	
         return DataStore.INSTANCE.getDiscs();
     }
 
@@ -124,6 +160,12 @@ public class MediaServiceImpl implements MediaService {
      */
     @Override
     public MediaServiceResult updateBook(String isbn, Book book,Token token) {
+    	
+    	ValidationResult valResult =ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_WRITE);
+    	if(valResult != ValidationResult.AUTHORIZATION_OK){
+    		return MediaServiceResult.NO_AUTHORIZATION;
+    	}
+    	
         isbn = isbn.replaceAll("[^0-9]", "");
         if (book == null)
             return MediaServiceResult.MISSING_CONTENT;
@@ -151,6 +193,12 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceResult updateDisc(String barcode, Disc disc,Token token) {
+    	
+    	ValidationResult valResult =ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.DISC_WRITE);
+    	if(valResult != ValidationResult.AUTHORIZATION_OK){
+    		return MediaServiceResult.NO_AUTHORIZATION;
+    	}
+    	
         barcode = barcode.replaceAll("[^0-9]", "");
         if (disc == null)
             return MediaServiceResult.MISSING_CONTENT;
