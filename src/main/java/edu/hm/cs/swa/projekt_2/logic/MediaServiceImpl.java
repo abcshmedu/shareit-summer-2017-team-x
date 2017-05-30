@@ -3,6 +3,7 @@ package edu.hm.cs.swa.projekt_2.logic;
 import edu.hm.cs.swa.projekt_2.datamodel.Book;
 import edu.hm.cs.swa.projekt_2.datamodel.Disc;
 import edu.hm.cs.swa.projekt_2.datamodel.Medium;
+import edu.hm.cs.swa.projekt_2.datamodel.Token;
 import edu.hm.cs.swa.projekt_2.persistence.DataStore;
 
 import java.util.Arrays;
@@ -17,7 +18,7 @@ public class MediaServiceImpl implements MediaService {
     private Logger LOGGER = Logger.getLogger(MediaServiceResult.class.getName());
 
     @Override
-    public MediaServiceResult addBook(Book book) {
+    public MediaServiceResult addBook(Book book,Token token) {
         if (book == null)
             return MediaServiceResult.MISSING_CONTENT;
         if (!checkIsbn(book.getIsbn()))
@@ -65,7 +66,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public MediaServiceResult addDisc(Disc disc) {
+    public MediaServiceResult addDisc(Disc disc,Token token) {
         if (disc == null)
             return MediaServiceResult.MISSING_CONTENT;
         if (!checkBarcode(disc.getBarcode()))
@@ -96,22 +97,22 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public Medium[] getBooks() {
+    public Medium[] getBooks(Token token) {
         return DataStore.INSTANCE.getBooks();
     }
 
     @Override
-    public Medium getBook(String isbn) {
+    public Medium getBook(String isbn,Token token) {
         return DataStore.INSTANCE.getBook(isbn.replaceAll("[^0-9]", ""));
     }
 
     @Override
-    public Medium getDisc(String barcode) {
+    public Medium getDisc(String barcode,Token token) {
         return DataStore.INSTANCE.getDisc(barcode.replaceAll("[^0-9]", ""));
     }
 
     @Override
-    public Medium[] getDiscs() {
+    public Medium[] getDiscs(Token token) {
         return DataStore.INSTANCE.getDiscs();
     }
 
@@ -122,7 +123,7 @@ public class MediaServiceImpl implements MediaService {
      * @param book Book with only changing values
      */
     @Override
-    public MediaServiceResult updateBook(String isbn, Book book) {
+    public MediaServiceResult updateBook(String isbn, Book book,Token token) {
         isbn = isbn.replaceAll("[^0-9]", "");
         if (book == null)
             return MediaServiceResult.MISSING_CONTENT;
@@ -149,7 +150,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public MediaServiceResult updateDisc(String barcode, Disc disc) {
+    public MediaServiceResult updateDisc(String barcode, Disc disc,Token token) {
         barcode = barcode.replaceAll("[^0-9]", "");
         if (disc == null)
             return MediaServiceResult.MISSING_CONTENT;

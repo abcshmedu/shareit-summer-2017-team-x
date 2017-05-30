@@ -3,6 +3,7 @@ package edu.hm.cs.swa.projekt_2.rest;
 import edu.hm.cs.swa.projekt_2.datamodel.Book;
 import edu.hm.cs.swa.projekt_2.datamodel.Disc;
 import edu.hm.cs.swa.projekt_2.datamodel.Medium;
+import edu.hm.cs.swa.projekt_2.datamodel.Token;
 import edu.hm.cs.swa.projekt_2.logic.MediaService;
 import edu.hm.cs.swa.projekt_2.logic.MediaServiceImpl;
 import edu.hm.cs.swa.projekt_2.logic.MediaServiceResult;
@@ -32,13 +33,13 @@ public class MediaResource {
     @Path("books")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
-    public Response createBook(Book newBook) {
+    public Response createBook(Book newBook,Token token) {
 
         LOGGER.info("rest request: add new book");
 
         MediaService service = new MediaServiceImpl();
 
-        MediaServiceResult result = service.addBook(newBook);
+        MediaServiceResult result = service.addBook(newBook,token);
         return Response.status(result.getStatus()).entity(result).build();
 
     }
@@ -46,12 +47,12 @@ public class MediaResource {
     @GET
     @Path("books/{isbn}")
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
-    public Response getBook(@PathParam("isbn") String isbn) {
+    public Response getBook(@PathParam("isbn") String isbn,Token token) {
 
         MediaService service = new MediaServiceImpl();
         LOGGER.info("rest request: get single book. isbn: " + isbn);
 
-        Medium medium = service.getBook(isbn);
+        Medium medium = service.getBook(isbn,token);
         if (medium != null)
             return Response.ok(medium).build();
         else
@@ -60,12 +61,13 @@ public class MediaResource {
 
     @GET
     @Path("books")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
-    public Response getBooks() {
+    public Response getBooks(Token token) {
         MediaService service = new MediaServiceImpl();
         LOGGER.info("rest request: get all books");
 
-        return Response.ok(service.getBooks()).build();
+        return Response.ok(service.getBooks(token)).build();
 
     }
 
@@ -73,12 +75,12 @@ public class MediaResource {
     @Path("books/{isbn}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
-    public Response updateBook(@PathParam("isbn") String isbn, Book updatedBook) {
+    public Response updateBook(@PathParam("isbn") String isbn, Book updatedBook,Token token) {
 
         MediaService service = new MediaServiceImpl();
         LOGGER.info("rest request: update Book. isbn: " + isbn);
 
-        MediaServiceResult result = service.updateBook(isbn, updatedBook);
+        MediaServiceResult result = service.updateBook(isbn, updatedBook,token);
         return Response.status(result.getStatus()).entity(result).build();
 
     }
@@ -87,34 +89,35 @@ public class MediaResource {
     @Path("discs")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
-    public Response createDisc(Disc newDisc) {
+    public Response createDisc(Disc newDisc,Token token) {
         LOGGER.info("rest request: add new book");
 
         MediaService service = new MediaServiceImpl();
 
-        MediaServiceResult result = service.addDisc(newDisc);
+        MediaServiceResult result = service.addDisc(newDisc,token);
         return Response.status(result.getStatus()).entity(result).build();
 
     }
 
     @GET
     @Path("discs")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
-    public Response getDiscs() {
+    public Response getDiscs(Token token) {
 
         MediaService service = new MediaServiceImpl();
         LOGGER.info("rest request: get all discs");
 
-        return Response.ok(service.getDiscs()).build();
+        return Response.ok(service.getDiscs(token)).build();
 
     }
 
     @GET
     @Path("discs/{barcode}")
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
-    public Response getDisc(@PathParam("barcode") String barcode) {
+    public Response getDisc(@PathParam("barcode") String barcode,Token token) {
         MediaService service = new MediaServiceImpl();
-        Medium medium = service.getDisc(barcode);
+        Medium medium = service.getDisc(barcode,token);
         if (medium != null)
             return Response.ok(medium).build();
         else
@@ -125,12 +128,12 @@ public class MediaResource {
     @Path("discs/{barcode}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
-    public Response updateDiscs(@PathParam("barcode") String barcode, Disc updatedDisc) {
+    public Response updateDiscs(@PathParam("barcode") String barcode, Disc updatedDisc,Token token) {
         MediaService service = new MediaServiceImpl();
         if (!barcode.isEmpty()) {
             LOGGER.info("rest request: update disc. barcode: " + barcode);
 
-            return Response.ok(service.updateDisc(barcode, updatedDisc)).build();
+            return Response.ok(service.updateDisc(barcode, updatedDisc,token)).build();
 
         }
         return Response.serverError().build();

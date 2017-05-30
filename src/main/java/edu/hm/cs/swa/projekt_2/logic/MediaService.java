@@ -3,6 +3,7 @@ package edu.hm.cs.swa.projekt_2.logic;
 import edu.hm.cs.swa.projekt_2.datamodel.Book;
 import edu.hm.cs.swa.projekt_2.datamodel.Disc;
 import edu.hm.cs.swa.projekt_2.datamodel.Medium;
+import edu.hm.cs.swa.projekt_2.datamodel.Token;
 
 /**
  * This interface describes all available methods of our business logic.
@@ -16,7 +17,7 @@ public interface MediaService {
 	 * @param book
 	 * @return {@link MediaServiceResult}, contains status information about the operation
 	 */
-    public MediaServiceResult addBook(Book book);
+    public MediaServiceResult addBook(Book book,Token token);
 
     /**
      * Add a new disc to the list
@@ -24,26 +25,26 @@ public interface MediaService {
      * @return {@link MediaServiceResult}, contains status information about the operation
 
      */
-    public MediaServiceResult addDisc(Disc disc);
+    public MediaServiceResult addDisc(Disc disc,Token token);
 
     /**
      * Returns an array containing all known books to the client
      * @return an array of books
      */
-    public Medium[] getBooks();
+    public Medium[] getBooks(Token token);
 
     /**
      * Searches for a book with the given ISBN. if none exists, it returns null
      * @param isbn
      * @return The found book or null
      */
-    public Medium getBook(String isbn);
+    public Medium getBook(String isbn,Token token);
 
     /**
      * Returns an array containing all known discs to the client
      * @return an array of discs
      */
-    public Medium[] getDiscs();
+    public Medium[] getDiscs(Token token);
 
     /**
      * Searches for a disc with the given barcode. if none exists, it returns null
@@ -51,7 +52,7 @@ public interface MediaService {
      * @param barcode
      * @return the found disc or null
      */
-    public Medium getDisc(String barcode);
+    public Medium getDisc(String barcode,Token token);
 
 
     /**
@@ -63,7 +64,7 @@ public interface MediaService {
      * @param book
      * @return {@link MediaServiceResult}, contains status information about the operation
      */
-    public MediaServiceResult updateBook(String isbn, Book book);
+    public MediaServiceResult updateBook(String isbn, Book book,Token token);
 
     /**
      * This will search for a disc with the specified barcode. The disc is then 
@@ -74,6 +75,6 @@ public interface MediaService {
      * @return {@link MediaServiceResult}, contains status information about the operation
 
      */
-    public MediaServiceResult updateDisc(String barcode, Disc disc);
+    public MediaServiceResult updateDisc(String barcode, Disc disc,Token token);
 
 }
