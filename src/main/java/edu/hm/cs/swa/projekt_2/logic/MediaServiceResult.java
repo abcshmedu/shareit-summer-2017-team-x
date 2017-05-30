@@ -29,7 +29,7 @@ public enum MediaServiceResult {
     MISSING_AUTHOR(400, Response.Status.BAD_REQUEST, "Autor fehlt!"),
     MISSING_DIRECTOR(400, Response.Status.BAD_REQUEST, "Direktor fehlt!"),
     MISSING_FSK(400, Response.Status.BAD_REQUEST, "FSK fehlt!"),
-	NO_AUTHORIZATION(400, Response.Status.BAD_REQUEST, "Nicht berechtigt");
+	NO_AUTHORIZATION(400, Response.Status.BAD_REQUEST, "Nicht berechtigt!");
 
     private final int code;
     private final Response.Status status;
