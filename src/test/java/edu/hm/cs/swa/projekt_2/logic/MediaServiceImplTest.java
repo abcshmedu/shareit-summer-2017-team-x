@@ -2,9 +2,11 @@ package edu.hm.cs.swa.projekt_2.logic;
 
 import edu.hm.cs.swa.projekt_2.datamodel.Book;
 import edu.hm.cs.swa.projekt_2.datamodel.Medium;
+import edu.hm.cs.swa.projekt_2.datamodel.Token;
 import edu.hm.cs.swa.projekt_2.persistence.DataStore;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -18,10 +20,15 @@ public class MediaServiceImplTest {
     private final String isbn_valid_2 = "978-3836277198";
     private final String isbn_invalid = "978-3836217275";
 
-    private final String token = "";
+    private static String token = "";
 
     private final String barcode_valid = "5449000096241";
 
+    @BeforeClass
+    public static void init() {
+        Token t = ValidationService.INSTANCE.getToken("user1", "asd");
+        token = t.getID();
+    }
 
     @Before
     public void setUp() {
@@ -106,8 +113,10 @@ public class MediaServiceImplTest {
         Book newBook = new Book(author, isbn_valid, title);
         MediaService service = new MediaServiceImpl();
         service.addBook(newBook, token);
-        Assert.assertEquals(1, service.getBooks(token).length);
-        Assert.assertEquals(newBook, service.getBooks(token)[0]);
+        Medium[] books = service.getBooks(token);
+        Assert.assertTrue(books != null);
+        Assert.assertEquals(1, books.length);
+        Assert.assertEquals(newBook, books[0]);
     }
 
     @Test

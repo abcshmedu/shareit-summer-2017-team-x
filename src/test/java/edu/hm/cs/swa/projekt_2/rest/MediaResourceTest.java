@@ -3,7 +3,10 @@ package edu.hm.cs.swa.projekt_2.rest;
 import edu.hm.cs.swa.projekt_2.datamodel.Book;
 import edu.hm.cs.swa.projekt_2.datamodel.Disc;
 import edu.hm.cs.swa.projekt_2.datamodel.Medium;
+import edu.hm.cs.swa.projekt_2.datamodel.Token;
+import edu.hm.cs.swa.projekt_2.logic.ValidationService;
 import edu.hm.cs.swa.projekt_2.persistence.DataStore;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.ws.rs.core.Response;
@@ -24,8 +27,14 @@ public class MediaResourceTest {
     private final String barcode2 = "4003994155486";
     private final String director = "steven";
     private final String director2 = "spielberg";
-    private final String token = "";
+    private static String token = "";
 
+
+    @BeforeClass
+    public static void init() {
+        Token t = ValidationService.INSTANCE.getToken("user1", "asd");
+        token = t.getID();
+    }
 
     @Test
     public void testCreateBook() {
@@ -205,7 +214,11 @@ public class MediaResourceTest {
         assertEquals(200, response.getStatus());
 
         response = media.getDisc(barcode, token);
-        Disc disc = (Disc) response.getEntity();
+
+        Object o = response.getEntity();
+
+        assertTrue(o instanceof Disc);
+        Disc disc = (Disc) o;
 
         assertEquals(director2, disc.getDirector());
         assertEquals(title2, disc.getTitle());
