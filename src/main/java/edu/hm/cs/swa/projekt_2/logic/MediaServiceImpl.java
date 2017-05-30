@@ -18,7 +18,7 @@ public class MediaServiceImpl implements MediaService {
     private Logger LOGGER = Logger.getLogger(MediaServiceResult.class.getName());
 
     @Override
-    public MediaServiceResult addBook(Book book,Token token) {
+    public MediaServiceResult addBook(Book book,String token) {
     	
     	ValidationResult valResult =ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_WRITE);
     	if(valResult != ValidationResult.AUTHORIZATION_OK){
@@ -72,7 +72,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public MediaServiceResult addDisc(Disc disc,Token token) {
+    public MediaServiceResult addDisc(Disc disc,String token) {
     	
     	ValidationResult valResult =ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.DISC_WRITE);
     	if(valResult != ValidationResult.AUTHORIZATION_OK){
@@ -109,7 +109,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public Medium[] getBooks(Token token) {
+    public Medium[] getBooks(String token) {
     	
     	ValidationResult valResult =ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_READ);
     	if(valResult != ValidationResult.AUTHORIZATION_OK){
@@ -120,7 +120,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public Medium getBook(String isbn,Token token) {
+    public Medium getBook(String isbn,String token) {
     	
     	ValidationResult valResult =ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_READ
     		);
@@ -132,7 +132,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public Medium getDisc(String barcode,Token token) {
+    public Medium getDisc(String barcode,String token) {
     	
     	ValidationResult valResult =ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.DISC_READ);
     	if(valResult != ValidationResult.AUTHORIZATION_OK){
@@ -142,7 +142,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public Medium[] getDiscs(Token token) {
+    public Medium[] getDiscs(String token) {
     	
     	ValidationResult valResult =ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.DISC_READ);
     	if(valResult != ValidationResult.AUTHORIZATION_OK){
@@ -159,7 +159,7 @@ public class MediaServiceImpl implements MediaService {
      * @param book Book with only changing values
      */
     @Override
-    public MediaServiceResult updateBook(String isbn, Book book,Token token) {
+    public MediaServiceResult updateBook(String isbn, Book book,String token) {
     	
     	ValidationResult valResult =ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_WRITE);
     	if(valResult != ValidationResult.AUTHORIZATION_OK){
@@ -192,7 +192,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public MediaServiceResult updateDisc(String barcode, Disc disc,Token token) {
+    public MediaServiceResult updateDisc(String barcode, Disc disc,String token) {
     	
     	ValidationResult valResult =ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.DISC_WRITE);
     	if(valResult != ValidationResult.AUTHORIZATION_OK){

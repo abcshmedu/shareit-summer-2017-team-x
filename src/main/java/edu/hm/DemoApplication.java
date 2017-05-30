@@ -13,7 +13,7 @@ public class DemoApplication {
 		
 		System.out.println("Token: "+token.getID());
 		
-		ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_READ);
+		ValidationResult valResult = ValidationService.INSTANCE.validateToken(token.getID(), AuthorizationIDEnum.BOOK_READ);
 		
 		System.out.println(valResult);
 	}

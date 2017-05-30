@@ -15,6 +15,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.logging.Logger;
@@ -31,9 +32,8 @@ public class MediaResource {
 
     @POST
     @Path("books")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
-    public Response createBook(Book newBook,Token token) {
+    public Response createBook(Book newBook, @QueryParam("token") String token) {
 
         LOGGER.info("rest request: add new book");
 
@@ -47,7 +47,7 @@ public class MediaResource {
     @GET
     @Path("books/{isbn}")
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
-    public Response getBook(@PathParam("isbn") String isbn,Token token) {
+    public Response getBook(@PathParam("isbn") String isbn,@QueryParam("token")String token) {
 
         MediaService service = new MediaServiceImpl();
         LOGGER.info("rest request: get single book. isbn: " + isbn);
@@ -63,7 +63,7 @@ public class MediaResource {
     @Path("books")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
-    public Response getBooks(Token token) {
+    public Response getBooks(@QueryParam("token")String token) {
         MediaService service = new MediaServiceImpl();
         LOGGER.info("rest request: get all books");
 
@@ -75,7 +75,7 @@ public class MediaResource {
     @Path("books/{isbn}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
-    public Response updateBook(@PathParam("isbn") String isbn, Book updatedBook,Token token) {
+    public Response updateBook(@PathParam("isbn") String isbn, Book updatedBook,@QueryParam("token")String token) {
 
         MediaService service = new MediaServiceImpl();
         LOGGER.info("rest request: update Book. isbn: " + isbn);
@@ -89,7 +89,7 @@ public class MediaResource {
     @Path("discs")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
-    public Response createDisc(Disc newDisc,Token token) {
+    public Response createDisc(Disc newDisc,@QueryParam("token")String token) {
         LOGGER.info("rest request: add new book");
 
         MediaService service = new MediaServiceImpl();
@@ -103,7 +103,7 @@ public class MediaResource {
     @Path("discs")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
-    public Response getDiscs(Token token) {
+    public Response getDiscs(@QueryParam("token")String token) {
 
         MediaService service = new MediaServiceImpl();
         LOGGER.info("rest request: get all discs");
@@ -115,7 +115,7 @@ public class MediaResource {
     @GET
     @Path("discs/{barcode}")
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
-    public Response getDisc(@PathParam("barcode") String barcode,Token token) {
+    public Response getDisc(@PathParam("barcode") String barcode,@QueryParam("token")String token) {
         MediaService service = new MediaServiceImpl();
         Medium medium = service.getDisc(barcode,token);
         if (medium != null)
@@ -128,7 +128,7 @@ public class MediaResource {
     @Path("discs/{barcode}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
-    public Response updateDiscs(@PathParam("barcode") String barcode, Disc updatedDisc,Token token) {
+    public Response updateDiscs(@PathParam("barcode") String barcode, Disc updatedDisc,@QueryParam("token")String token) {
         MediaService service = new MediaServiceImpl();
         if (!barcode.isEmpty()) {
             LOGGER.info("rest request: update disc. barcode: " + barcode);

@@ -17,7 +17,7 @@ public interface MediaService {
 	 * @param book
 	 * @return {@link MediaServiceResult}, contains status information about the operation
 	 */
-    public MediaServiceResult addBook(Book book,Token token);
+    public MediaServiceResult addBook(Book book,String token);
 
     /**
      * Add a new disc to the list
@@ -25,26 +25,26 @@ public interface MediaService {
      * @return {@link MediaServiceResult}, contains status information about the operation
 
      */
-    public MediaServiceResult addDisc(Disc disc,Token token);
+    public MediaServiceResult addDisc(Disc disc,String token);
 
     /**
      * Returns an array containing all known books to the client
      * @return an array of books
      */
-    public Medium[] getBooks(Token token);
+    public Medium[] getBooks(String token);
 
     /**
      * Searches for a book with the given ISBN. if none exists, it returns null
      * @param isbn
      * @return The found book or null
      */
-    public Medium getBook(String isbn,Token token);
+    public Medium getBook(String isbn,String token);
 
     /**
      * Returns an array containing all known discs to the client
      * @return an array of discs
      */
-    public Medium[] getDiscs(Token token);
+    public Medium[] getDiscs(String token);
 
     /**
      * Searches for a disc with the given barcode. if none exists, it returns null
@@ -52,7 +52,7 @@ public interface MediaService {
      * @param barcode
      * @return the found disc or null
      */
-    public Medium getDisc(String barcode,Token token);
+    public Medium getDisc(String barcode,String token);
 
 
     /**
@@ -64,7 +64,7 @@ public interface MediaService {
      * @param book
      * @return {@link MediaServiceResult}, contains status information about the operation
      */
-    public MediaServiceResult updateBook(String isbn, Book book,Token token);
+    public MediaServiceResult updateBook(String isbn, Book book,String token);
 
     /**
      * This will search for a disc with the specified barcode. The disc is then 
@@ -75,6 +75,6 @@ public interface MediaService {
      * @return {@link MediaServiceResult}, contains status information about the operation
 
      */
-    public MediaServiceResult updateDisc(String barcode, Disc disc,Token token);
+    public MediaServiceResult updateDisc(String barcode, Disc disc,String token);
 
 }

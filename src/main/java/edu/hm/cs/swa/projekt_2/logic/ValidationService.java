@@ -17,11 +17,11 @@ public class ValidationService {
 
 	public static ValidationService INSTANCE = new ValidationService();
 	
-	public ValidationResult validateToken(Token token, AuthorizationIDEnum authorizationID){
+	public ValidationResult validateToken(String token, AuthorizationIDEnum authorizationID){
 		
 		try {
 			HttpResponse<JsonNode> jsonResponse = Unirest.get("http://"+Configuration.AUTH_SERVER_URL+":"+Configuration.AUTH_SERVER_PORT+"/shareit/validate/token")
-					  .queryString("tokenID", token.getID())
+					  .queryString("tokenID", token)
 					  .queryString("authID",authorizationID.getAuthorizationID())
 					  .asJson();
 			
