@@ -3,9 +3,12 @@ package edu.hm.cs.swa.projekt_2.rest;
 import edu.hm.cs.swa.projekt_2.datamodel.Book;
 import edu.hm.cs.swa.projekt_2.datamodel.Disc;
 import edu.hm.cs.swa.projekt_2.datamodel.Medium;
+import edu.hm.cs.swa.projekt_2.logic.AuthorizationIDEnum;
 import edu.hm.cs.swa.projekt_2.logic.MediaService;
 import edu.hm.cs.swa.projekt_2.logic.MediaServiceImpl;
 import edu.hm.cs.swa.projekt_2.logic.MediaServiceResult;
+import edu.hm.cs.swa.projekt_2.logic.ValidationResult;
+import edu.hm.cs.swa.projekt_2.logic.ValidationService;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -33,12 +36,17 @@ public class MediaResource {
     @Path("books")
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
     public Response createBook(Book newBook, @QueryParam("token") String token) {
-
         LOGGER.info("rest request: add new book");
+
+        ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_WRITE);
+        if (valResult != ValidationResult.AUTHORIZATION_OK) {
+            return getResponse(MediaServiceResult.NO_AUTHORIZATION);
+        }
+
 
         MediaService service = new MediaServiceImpl();
 
-        MediaServiceResult result = service.addBook(newBook, token);
+        MediaServiceResult result = service.addBook(newBook);
         return getResponse(result);
 
     }
@@ -48,10 +56,15 @@ public class MediaResource {
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
     public Response getBook(@PathParam("isbn") String isbn, @QueryParam("token") String token) {
 
-        MediaService service = new MediaServiceImpl();
         LOGGER.info("rest request: get single book. isbn: " + isbn);
 
-        Medium medium = service.getBook(isbn, token);
+        ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_READ);
+        if (valResult != ValidationResult.AUTHORIZATION_OK) {
+            return getResponse(MediaServiceResult.NO_AUTHORIZATION);
+        }
+
+        MediaService service = new MediaServiceImpl();
+        Medium medium = service.getBook(isbn);
         if (medium != null)
             return Response.ok(medium).build();
         else
@@ -63,14 +76,18 @@ public class MediaResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
     public Response getBooks(@QueryParam("token") String token) {
-        MediaService service = new MediaServiceImpl();
         LOGGER.info("rest request: get all books");
 
-        Medium[] books = service.getBooks(token);
+        ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_READ);
+        if (valResult != ValidationResult.AUTHORIZATION_OK) {
+            return getResponse(MediaServiceResult.NO_AUTHORIZATION);
+        }
+        MediaService service = new MediaServiceImpl();
+        Medium[] books = service.getBooks();
         if (books == null)
             return getResponse(MediaServiceResult.NO_AUTHORIZATION);
 
-        return Response.ok(service.getBooks(token)).build();
+        return Response.ok(books).build();
 
     }
 
@@ -79,11 +96,16 @@ public class MediaResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
     public Response updateBook(@PathParam("isbn") String isbn, Book updatedBook, @QueryParam("token") String token) {
-
-        MediaService service = new MediaServiceImpl();
         LOGGER.info("rest request: update Book. isbn: " + isbn);
 
-        MediaServiceResult result = service.updateBook(isbn, updatedBook, token);
+        ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_WRITE);
+        if (valResult != ValidationResult.AUTHORIZATION_OK) {
+            return getResponse(MediaServiceResult.NO_AUTHORIZATION);
+        }
+
+        MediaService service = new MediaServiceImpl();
+
+        MediaServiceResult result = service.updateBook(isbn, updatedBook);
         return getResponse(result);
 
     }
@@ -95,9 +117,14 @@ public class MediaResource {
     public Response createDisc(Disc newDisc, @QueryParam("token") String token) {
         LOGGER.info("rest request: add new book");
 
+        ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.DISC_WRITE);
+        if (valResult != ValidationResult.AUTHORIZATION_OK) {
+            return getResponse(MediaServiceResult.NO_AUTHORIZATION);
+        }
+
         MediaService service = new MediaServiceImpl();
 
-        MediaServiceResult result = service.addDisc(newDisc, token);
+        MediaServiceResult result = service.addDisc(newDisc);
         return getResponse(result);
 
     }
@@ -107,11 +134,17 @@ public class MediaResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
     public Response getDiscs(@QueryParam("token") String token) {
-
-        MediaService service = new MediaServiceImpl();
         LOGGER.info("rest request: get all discs");
 
-        Medium[] discs = service.getDiscs(token);
+
+        ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.DISC_READ);
+        if (valResult != ValidationResult.AUTHORIZATION_OK) {
+            return getResponse(MediaServiceResult.NO_AUTHORIZATION);
+        }
+
+        MediaService service = new MediaServiceImpl();
+
+        Medium[] discs = service.getDiscs();
         if (discs == null)
             return getResponse(MediaServiceResult.NO_AUTHORIZATION);
 
@@ -123,8 +156,15 @@ public class MediaResource {
     @Path("discs/{barcode}")
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
     public Response getDisc(@PathParam("barcode") String barcode, @QueryParam("token") String token) {
+        LOGGER.info("rest request: get disc. barcode: " + barcode);
+
+        ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_READ);
+        if (valResult != ValidationResult.AUTHORIZATION_OK) {
+            return getResponse(MediaServiceResult.NO_AUTHORIZATION);
+        }
+
         MediaService service = new MediaServiceImpl();
-        Medium medium = service.getDisc(barcode, token);
+        Medium medium = service.getDisc(barcode);
         if (medium != null)
             return Response.ok(medium).build();
         else
@@ -136,11 +176,17 @@ public class MediaResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
     public Response updateDiscs(@PathParam("barcode") String barcode, Disc updatedDisc, @QueryParam("token") String token) {
+        LOGGER.info("rest request: update disc. barcode: " + barcode);
+
+        ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.DISC_WRITE);
+        if (valResult != ValidationResult.AUTHORIZATION_OK) {
+            return getResponse(MediaServiceResult.NO_AUTHORIZATION);
+        }
+
         MediaService service = new MediaServiceImpl();
         if (!barcode.isEmpty()) {
-            LOGGER.info("rest request: update disc. barcode: " + barcode);
 
-            return Response.ok(service.updateDisc(barcode, updatedDisc, token)).build();
+            return Response.ok(service.updateDisc(barcode, updatedDisc)).build();
 
         }
         return Response.serverError().build();
