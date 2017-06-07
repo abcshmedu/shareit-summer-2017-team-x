@@ -9,6 +9,8 @@ import edu.hm.cs.swa.projekt_2.logic.MediaServiceImpl;
 import edu.hm.cs.swa.projekt_2.logic.MediaServiceResult;
 import edu.hm.cs.swa.projekt_2.logic.ValidationResult;
 import edu.hm.cs.swa.projekt_2.logic.ValidationService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -20,7 +22,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.logging.Logger;
 
 /**
  * This represents the REST API as described in the readme file.
@@ -30,7 +31,7 @@ import java.util.logging.Logger;
 @Path("media")
 public class MediaResource {
 
-    private Logger LOGGER = Logger.getLogger(MediaResource.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(MediaResource.class);
 
     @POST
     @Path("books")

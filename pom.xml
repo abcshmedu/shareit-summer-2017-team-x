@@ -89,6 +89,14 @@
     <build>
         <finalName>shareit</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>src/main/ressources</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
         <testSourceDirectory>src/test/java</testSourceDirectory>
         <plugins>
             <plugin>

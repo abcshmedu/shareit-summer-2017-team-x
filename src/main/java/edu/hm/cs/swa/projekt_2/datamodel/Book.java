@@ -1,13 +1,22 @@
 package edu.hm.cs.swa.projekt_2.datamodel;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.io.Serializable;
+
 /**
  * Representing a Book, derived from {@linkplain Medium}
  */
-public class Book extends Medium {
+@Entity
+public class Book extends Medium implements Serializable {
 
+
+    @Column(name = "Author")
     private String author;
 
-
+    @Id
+    @Column(name = "Isbn")
     private String isbn;
 
     /**

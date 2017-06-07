@@ -41,4 +41,13 @@ public enum ValidationResult {
     public String getAdditionalMsg() {
         return additionalMsg;
     }
+
+    @Override
+    public String toString() {
+        return "ValidationResult{" +
+                "code=" + code +
+                ", status=" + status +
+                ", additionalMsg='" + additionalMsg + '\'' +
+                '}';
+    }
 }

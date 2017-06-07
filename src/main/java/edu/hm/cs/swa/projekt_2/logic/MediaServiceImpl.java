@@ -4,9 +4,10 @@ import edu.hm.cs.swa.projekt_2.datamodel.Book;
 import edu.hm.cs.swa.projekt_2.datamodel.Disc;
 import edu.hm.cs.swa.projekt_2.datamodel.Medium;
 import edu.hm.cs.swa.projekt_2.persistence.DataStore;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
@@ -14,7 +15,7 @@ import java.util.regex.Pattern;
  */
 public class MediaServiceImpl implements MediaService {
 
-    private Logger LOGGER = Logger.getLogger(MediaServiceResult.class.getName());
+    private Logger LOGGER = LogManager.getLogger(MediaServiceResult.class);
 
     @Override
     public MediaServiceResult addBook(Book book) {

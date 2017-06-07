@@ -1,11 +1,16 @@
 package edu.hm.cs.swa.projekt_2.datamodel;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
+
 /**
  * Abstract superclass to bundle common informations
- *
  */
-public abstract class Medium {
+@MappedSuperclass
+public abstract class Medium implements Serializable {
 
+    @Column
     private String title;
 
     /**
@@ -16,6 +21,7 @@ public abstract class Medium {
 
     /**
      * Parameterized constructor for creating a new element
+     *
      * @param title
      */
     public Medium(String title) {
@@ -46,6 +52,7 @@ public abstract class Medium {
 
     /**
      * Returns the title, this can be null;
+     *
      * @return
      */
     public String getTitle() {
@@ -54,6 +61,7 @@ public abstract class Medium {
 
     /**
      * Sets the title.
+     *
      * @param title
      */
     public void setTitle(String title) {

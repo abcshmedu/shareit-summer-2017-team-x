@@ -16,7 +16,7 @@ public class CopyTest {
 		Copy copy = new Copy(book, owner);
 		
 		assertEquals(copy.getMedium(), book);
-		assertEquals(copy.getOwner(), owner);
+		assertEquals(copy.getCopyOwner(), owner);
 	}
 
 }

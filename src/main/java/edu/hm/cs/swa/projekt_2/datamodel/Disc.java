@@ -1,12 +1,24 @@
 package edu.hm.cs.swa.projekt_2.datamodel;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.io.Serializable;
+
 /**
  * Representing a Disc, derived from {@linkplain Medium}
  */
-public class Disc extends Medium {
+@Entity
+public class Disc extends Medium implements Serializable {
 
+    @Id
+    @Column(name = "Barcode")
     private String barcode;
+
+    @Column(name = "Director")
     private String director;
+
+    @Column(name = "Fsk")
     private Integer fsk;
 
     /**
