@@ -1,3 +1,4 @@
+/*
 package edu.hm.cs.swa.projekt_2.datamodel;
 
 import static org.junit.Assert.*;
@@ -20,3 +21,4 @@ public class CopyTest {
 	}
 
 }
+*/

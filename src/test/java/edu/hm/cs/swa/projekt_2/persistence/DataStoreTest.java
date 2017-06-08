@@ -1,7 +1,6 @@
 package edu.hm.cs.swa.projekt_2.persistence;
 
 import edu.hm.cs.swa.projekt_2.datamodel.Book;
-import edu.hm.cs.swa.projekt_2.datamodel.Copy;
 import edu.hm.cs.swa.projekt_2.datamodel.Disc;
 import org.junit.Test;
 
@@ -12,17 +11,19 @@ public class DataStoreTest {
     @Test
     public void testEmptyStore() {
 
-        DataStore store = new DataStore();
+        DataStore store = DataStore.INSTANCE;
+        store.reset();
 
         assertEquals(store.getBooks().length, 0);
-        assertEquals(store.getCopies().length, 0);
+//        assertEquals(store.getCopies().length, 0);
         assertEquals(store.getDiscs().length, 0);
     }
 
     @Test
     public void testAddBook() {
 
-        DataStore store = new DataStore();
+        DataStore store = DataStore.INSTANCE;
+        store.reset();
 
         Book book = new Book("", "", "");
 
@@ -35,8 +36,8 @@ public class DataStoreTest {
     @Test
     public void testAddDisc() {
 
-        DataStore store = new DataStore();
-
+        DataStore store = DataStore.INSTANCE;
+        store.reset();
         Disc disc = new Disc("", "", 0, "");
 
         assertEquals(store.getDiscs().length, 0);
@@ -45,12 +46,12 @@ public class DataStoreTest {
         assertEquals(store.getDiscs()[0], disc);
 
     }
-
+/*
     @Test
     public void testAddCopy() {
 
-        DataStore store = new DataStore();
-
+        DataStore store = DataStore.INSTANCE;
+        store.reset();
         Disc disc = new Disc("", "", 0, "");
         Copy copy = new Copy(disc, "bert");
 
@@ -58,17 +59,15 @@ public class DataStoreTest {
         store.addCopy(copy);
         assertEquals(store.getCopies().length, 1);
         assertEquals(store.getCopies()[0], copy);
-
-        DataStore.INSTANCE.reset();
-    }
+    }*/
 
     @Test
     public void testGetByBarcode() {
 
         String barcode = "abcde";
 
-        DataStore store = new DataStore();
-
+        DataStore store = DataStore.INSTANCE;
+        store.reset();
         Disc disc = new Disc(barcode, "", 0, "");
         store.addDisc(disc);
 

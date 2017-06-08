@@ -1,7 +1,6 @@
 package edu.hm.cs.swa.projekt_2.persistence;
 
 import edu.hm.cs.swa.projekt_2.datamodel.Book;
-import edu.hm.cs.swa.projekt_2.datamodel.Copy;
 import edu.hm.cs.swa.projekt_2.datamodel.Disc;
 import edu.hm.cs.swa.projekt_2.datamodel.Medium;
 import org.apache.logging.log4j.LogManager;
@@ -29,7 +28,7 @@ public class DataStore {
     /**
      * Default constructor, creates an empty datastore
      */
-    protected DataStore() {
+    private DataStore() {
         // A SessionFactory is set up once for an application!
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure() // configures settings from hibernate.cfg.xml
@@ -113,6 +112,7 @@ public class DataStore {
      *
      * @return
      */
+/*
     public Copy[] getCopies() {
         Session session = getSessionFactory().openSession();
         session.beginTransaction();
@@ -121,6 +121,7 @@ public class DataStore {
         session.close();
         return copyList.toArray(new Copy[copyList.size()]);
     }
+*/
 
     /**
      * Adds a new book to the store
@@ -161,9 +162,10 @@ public class DataStore {
      *
      * @param copy
      */
-    public void addCopy(Copy copy) {
+    /*public void addCopy(Copy copy) {
         saveObject(copy);
     }
+*/
 
     /**
      * Adds a new Disc to the list of known discs.
