@@ -7,15 +7,13 @@ import javax.ws.rs.core.Response;
 /**
  * This class acts as a serializable result object for the REST API.
  * It contains a status code and an additional message that can be send to the client.
- * 
- *
  */
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum MediaServiceResult {
 
-	/**
-	 * Status code definition
-	 */
+    /**
+     * Status code definition
+     */
     OK(200, Response.Status.OK, "Request erfolgreich!"),
     CREATED(201, Response.Status.CREATED, "Ressource wurde erstellt!"),
     MISSING_CONTENT(400, Response.Status.BAD_REQUEST, "Notwendige Daten wurden nicht mit angegeben!"),
@@ -29,7 +27,8 @@ public enum MediaServiceResult {
     MISSING_AUTHOR(400, Response.Status.BAD_REQUEST, "Autor fehlt!"),
     MISSING_DIRECTOR(400, Response.Status.BAD_REQUEST, "Direktor fehlt!"),
     MISSING_FSK(400, Response.Status.BAD_REQUEST, "FSK fehlt!"),
-	NO_AUTHORIZATION(400, Response.Status.BAD_REQUEST, "Nicht berechtigt!");
+    INVALID_MAPPING(400, Response.Status.BAD_REQUEST, "Mapping fehlerhaft! Das angegebene JSON konnte nicht in ein passendes Objekt gemappt werden!"),
+    NO_AUTHORIZATION(400, Response.Status.BAD_REQUEST, "Nicht berechtigt!");
 
     private final int code;
     private final Response.Status status;
@@ -38,7 +37,7 @@ public enum MediaServiceResult {
 
     /**
      * Creates a new MediaResult. this contains of a code, a status and a message.
-     * 
+     *
      * @param code
      * @param status
      * @param msg
@@ -51,7 +50,7 @@ public enum MediaServiceResult {
 
     /**
      * Returns the code. This is an HTTP code
-     * 
+     *
      * @return
      */
     public int getCode() {
@@ -60,6 +59,7 @@ public enum MediaServiceResult {
 
     /**
      * Returns the status.
+     *
      * @return
      */
     public Response.Status getStatus() {
@@ -68,6 +68,7 @@ public enum MediaServiceResult {
 
     /**
      * Returns a possible additional message
+     *
      * @return
      */
     public String getAdditionalMsg() {
