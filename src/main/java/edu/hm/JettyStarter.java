@@ -3,8 +3,6 @@ package edu.hm;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.webapp.*;
 
-import edu.hm.cs.swa.projekt_2.logic.ValidationService;
-
 /**
  * Start the application without an AppServer like tomcat.
  * @author <a mailto:axel.boettcher@hm.edu>Axel B&ouml;ttcher</a>

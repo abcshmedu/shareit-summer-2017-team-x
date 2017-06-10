@@ -4,7 +4,7 @@ import edu.hm.cs.swa.projekt_2.datamodel.Book;
 import edu.hm.cs.swa.projekt_2.datamodel.Disc;
 import edu.hm.cs.swa.projekt_2.datamodel.Medium;
 import edu.hm.cs.swa.projekt_2.datamodel.Token;
-import edu.hm.cs.swa.projekt_2.logic.ValidationService;
+import edu.hm.cs.swa.projekt_2.logic.ValidationServiceImpl;
 import edu.hm.cs.swa.projekt_2.persistence.DataStore;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class MediaResourceTest {
 
     @BeforeClass
     public static void init() {
-        Token t = ValidationService.INSTANCE.getToken("user1", "asd");
+        Token t = ValidationServiceImpl.INSTANCE.getToken("user1", "asd");
         token = t.getID();
     }
 

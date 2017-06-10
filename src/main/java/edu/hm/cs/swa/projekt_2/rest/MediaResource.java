@@ -45,7 +45,7 @@ public class MediaResource {
     public Response createBook(Book newBook, @QueryParam("token") String token) {
         LOGGER.info("rest request: add new book");
 
-        ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_WRITE);
+        ValidationResult valResult = getInjector().getInstance(ValidationService.class).validateToken(token, AuthorizationIDEnum.BOOK_WRITE);
         if (valResult != ValidationResult.AUTHORIZATION_OK) {
             return getResponse(MediaServiceResult.NO_AUTHORIZATION);
         }
@@ -65,7 +65,7 @@ public class MediaResource {
 
         LOGGER.info("rest request: get single book. isbn: " + isbn);
 
-        ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_READ);
+        ValidationResult valResult = getInjector().getInstance(ValidationService.class).validateToken(token, AuthorizationIDEnum.BOOK_READ);
         if (valResult != ValidationResult.AUTHORIZATION_OK) {
             return getResponse(MediaServiceResult.NO_AUTHORIZATION);
         }
@@ -85,7 +85,7 @@ public class MediaResource {
     public Response getBooks(@QueryParam("token") String token) {
         LOGGER.info("rest request: get all books");
 
-        ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_READ);
+        ValidationResult valResult = getInjector().getInstance(ValidationService.class).validateToken(token, AuthorizationIDEnum.BOOK_READ);
         if (valResult != ValidationResult.AUTHORIZATION_OK) {
             return getResponse(MediaServiceResult.NO_AUTHORIZATION);
         }
@@ -105,7 +105,7 @@ public class MediaResource {
     public Response updateBook(@PathParam("isbn") String isbn, Book updatedBook, @QueryParam("token") String token) {
         LOGGER.info("rest request: update Book. isbn: " + isbn);
 
-        ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_WRITE);
+        ValidationResult valResult = getInjector().getInstance(ValidationService.class).validateToken(token, AuthorizationIDEnum.BOOK_WRITE);
         if (valResult != ValidationResult.AUTHORIZATION_OK) {
             return getResponse(MediaServiceResult.NO_AUTHORIZATION);
         }
@@ -124,7 +124,7 @@ public class MediaResource {
     public Response createDisc(Disc newDisc, @QueryParam("token") String token) {
         LOGGER.info("rest request: add new book");
 
-        ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.DISC_WRITE);
+        ValidationResult valResult = getInjector().getInstance(ValidationService.class).validateToken(token, AuthorizationIDEnum.DISC_WRITE);
         if (valResult != ValidationResult.AUTHORIZATION_OK) {
             return getResponse(MediaServiceResult.NO_AUTHORIZATION);
         }
@@ -144,7 +144,7 @@ public class MediaResource {
         LOGGER.info("rest request: get all discs");
 
 
-        ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.DISC_READ);
+        ValidationResult valResult = getInjector().getInstance(ValidationService.class).validateToken(token, AuthorizationIDEnum.DISC_READ);
         if (valResult != ValidationResult.AUTHORIZATION_OK) {
             return getResponse(MediaServiceResult.NO_AUTHORIZATION);
         }
@@ -165,7 +165,7 @@ public class MediaResource {
     public Response getDisc(@PathParam("barcode") String barcode, @QueryParam("token") String token) {
         LOGGER.info("rest request: get disc. barcode: " + barcode);
 
-        ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.BOOK_READ);
+        ValidationResult valResult = getInjector().getInstance(ValidationService.class).validateToken(token, AuthorizationIDEnum.BOOK_READ);
         if (valResult != ValidationResult.AUTHORIZATION_OK) {
             return getResponse(MediaServiceResult.NO_AUTHORIZATION);
         }
@@ -185,7 +185,7 @@ public class MediaResource {
     public Response updateDiscs(@PathParam("barcode") String barcode, Disc updatedDisc, @QueryParam("token") String token) {
         LOGGER.info("rest request: update disc. barcode: " + barcode);
 
-        ValidationResult valResult = ValidationService.INSTANCE.validateToken(token, AuthorizationIDEnum.DISC_WRITE);
+        ValidationResult valResult = getInjector().getInstance(ValidationService.class).validateToken(token, AuthorizationIDEnum.DISC_WRITE);
         if (valResult != ValidationResult.AUTHORIZATION_OK) {
             return getResponse(MediaServiceResult.NO_AUTHORIZATION);
         }
