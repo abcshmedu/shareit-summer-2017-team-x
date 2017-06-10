@@ -1,5 +1,8 @@
 package edu.hm.cs.swa.projekt_2.rest;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import edu.hm.Configuration;
 import edu.hm.cs.swa.projekt_2.datamodel.Book;
 import edu.hm.cs.swa.projekt_2.datamodel.Disc;
 import edu.hm.cs.swa.projekt_2.datamodel.Medium;
@@ -33,6 +36,9 @@ public class MediaResource {
 
     private static final Logger LOGGER = LogManager.getLogger(MediaResource.class);
 
+
+    private Injector injector = Guice.createInjector(new Configuration());
+
     @POST
     @Path("books")
     @Produces(MediaType.APPLICATION_JSON + "; charset=utf-8")
@@ -45,7 +51,7 @@ public class MediaResource {
         }
 
 
-        MediaService service = new MediaServiceImpl();
+        MediaService service = getInjector().getInstance(MediaService.class);
 
         MediaServiceResult result = service.addBook(newBook);
         return getResponse(result);
@@ -64,7 +70,7 @@ public class MediaResource {
             return getResponse(MediaServiceResult.NO_AUTHORIZATION);
         }
 
-        MediaService service = new MediaServiceImpl();
+        MediaService service = getInjector().getInstance(MediaService.class);
         Medium medium = service.getBook(isbn);
         if (medium != null)
             return Response.ok(medium).build();
@@ -83,7 +89,7 @@ public class MediaResource {
         if (valResult != ValidationResult.AUTHORIZATION_OK) {
             return getResponse(MediaServiceResult.NO_AUTHORIZATION);
         }
-        MediaService service = new MediaServiceImpl();
+        MediaService service = getInjector().getInstance(MediaService.class);
         Medium[] books = service.getBooks();
         if (books == null)
             return getResponse(MediaServiceResult.NO_AUTHORIZATION);
@@ -104,7 +110,7 @@ public class MediaResource {
             return getResponse(MediaServiceResult.NO_AUTHORIZATION);
         }
 
-        MediaService service = new MediaServiceImpl();
+        MediaService service = getInjector().getInstance(MediaService.class);
 
         MediaServiceResult result = service.updateBook(isbn, updatedBook);
         return getResponse(result);
@@ -123,7 +129,7 @@ public class MediaResource {
             return getResponse(MediaServiceResult.NO_AUTHORIZATION);
         }
 
-        MediaService service = new MediaServiceImpl();
+        MediaService service = getInjector().getInstance(MediaService.class);
 
         MediaServiceResult result = service.addDisc(newDisc);
         return getResponse(result);
@@ -143,7 +149,7 @@ public class MediaResource {
             return getResponse(MediaServiceResult.NO_AUTHORIZATION);
         }
 
-        MediaService service = new MediaServiceImpl();
+        MediaService service = getInjector().getInstance(MediaService.class);
 
         Medium[] discs = service.getDiscs();
         if (discs == null)
@@ -164,7 +170,7 @@ public class MediaResource {
             return getResponse(MediaServiceResult.NO_AUTHORIZATION);
         }
 
-        MediaService service = new MediaServiceImpl();
+        MediaService service = getInjector().getInstance(MediaService.class);
         Medium medium = service.getDisc(barcode);
         if (medium != null)
             return Response.ok(medium).build();
@@ -191,6 +197,10 @@ public class MediaResource {
 
         }
         return Response.serverError().build();
+    }
+
+    private Injector getInjector() {
+        return injector;
     }
 
     private Response getResponse(MediaServiceResult msr) {

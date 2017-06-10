@@ -29,16 +29,13 @@ public class DataStore {
      * Default constructor, creates an empty datastore
      */
     private DataStore() {
-        // A SessionFactory is set up once for an application!
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure() // configures settings from hibernate.cfg.xml
+                .configure()
                 .build();
         try {
             sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         } catch (Exception e) {
-            LOGGER.error("Failed to setup Session", e);
-            // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
-            // so destroy it manually.
+            LOGGER.error("Fehler beim initialisieren der Session", e);
             StandardServiceRegistryBuilder.destroy(registry);
         }
     }

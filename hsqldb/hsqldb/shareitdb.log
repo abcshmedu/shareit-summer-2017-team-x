@@ -1,5 +1,7 @@
-/*C9*/SET SCHEMA PUBLIC
+/*C3*/SET SCHEMA PUBLIC
 drop table Book if exists
 drop table Disc if exists
 create table Book (Isbn varchar(255) not null, title varchar(255), Author varchar(255), primary key (Isbn))
 create table Disc (Barcode varchar(255) not null, title varchar(255), Director varchar(255), Fsk integer, primary key (Barcode))
+INSERT INTO BOOK VALUES('9783836217798','testbook1','TestAuthor')
+COMMIT
