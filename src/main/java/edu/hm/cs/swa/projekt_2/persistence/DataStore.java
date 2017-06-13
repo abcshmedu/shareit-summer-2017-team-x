@@ -65,6 +65,14 @@ public class DataStore {
         return bookList.toArray(new Medium[bookList.size()]);
     }
 
+    public void updateObject(Medium media) {
+        Session session = getSessionFactory().openSession();
+        session.beginTransaction();
+        session.update(media);
+        session.getTransaction().commit();
+        session.close();
+    }
+
     /**
      * Returns an array of all known discs
      *

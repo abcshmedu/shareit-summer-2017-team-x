@@ -147,6 +147,8 @@ public class MediaServiceImpl implements MediaService {
         if (book.getTitle() != null && !old.getTitle().equals(book.getTitle()))
             old.setTitle(book.getTitle());
 
+        DataStore.INSTANCE.updateObject(old);
+
         return MediaServiceResult.OK;
     }
 
@@ -177,6 +179,8 @@ public class MediaServiceImpl implements MediaService {
 
         if (disc.getFsk() != null && !old.getFsk().equals(disc.getFsk()))
             old.setFsk(disc.getFsk());
+
+        DataStore.INSTANCE.updateObject(old);
 
         return MediaServiceResult.OK;
     }
