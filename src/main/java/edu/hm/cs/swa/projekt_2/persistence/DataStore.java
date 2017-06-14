@@ -11,6 +11,8 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import com.google.inject.Inject;
+
 import javax.persistence.NoResultException;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class DataStore {
     /**
      * Default constructor, creates an empty datastore
      */
+    @Inject
     private DataStore() {
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure()
@@ -38,6 +41,7 @@ public class DataStore {
             LOGGER.error("Fehler beim initialisieren der Session", e);
             StandardServiceRegistryBuilder.destroy(registry);
         }
+     
     }
 
     private SessionFactory getSessionFactory() {

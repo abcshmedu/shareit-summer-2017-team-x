@@ -7,6 +7,8 @@ import edu.hm.cs.swa.projekt_2.persistence.DataStore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.inject.Inject;
+
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
@@ -17,6 +19,9 @@ public class MediaServiceImpl implements MediaService {
 
     private Logger LOGGER = LogManager.getLogger(MediaServiceResult.class);
 
+    @Inject
+    private DataStore dataStore;
+    
     @Override
     public MediaServiceResult addBook(Book book) {
 
@@ -34,7 +39,9 @@ public class MediaServiceImpl implements MediaService {
         if (book.getAuthor() == null || book.getAuthor().isEmpty())
             return MediaServiceResult.MISSING_AUTHOR; // Autor fehlt
 
-        DataStore.INSTANCE.addBook(book);
+        //dataStore.addBook(book);
+        
+        dataStore.addBook(book);
         LOGGER.info("New book added: " + book.toString());
 
         return MediaServiceResult.CREATED;
@@ -84,37 +91,38 @@ public class MediaServiceImpl implements MediaService {
         if (disc.getFsk() == null)
             return MediaServiceResult.MISSING_FSK;
 
-        DataStore.INSTANCE.addDisc(disc);
+        dataStore.addDisc(disc);
         LOGGER.info("New disc added: " + disc.toString());
         return MediaServiceResult.CREATED;
     }
 
     private boolean containsIsbn(String isbn) {
-        return Arrays.stream(DataStore.INSTANCE.getBooks()).anyMatch(i -> ((Book) i).getIsbn().equals(isbn));
+        return Arrays.stream(dataStore.getBooks()).anyMatch(i -> ((Book) i).getIsbn().equals(isbn));
     }
 
     private boolean containsBarcode(String barcode) {
-        return Arrays.stream(DataStore.INSTANCE.getDiscs()).anyMatch(i -> ((Disc) i).getBarcode().equals(barcode));
+        return Arrays.stream(dataStore.getDiscs()).anyMatch(i -> ((Disc) i).getBarcode().equals(barcode));
     }
 
     @Override
     public Medium[] getBooks() {
-        return DataStore.INSTANCE.getBooks();
+        //return dataStore.getBooks();
+    	return dataStore.getBooks();
     }
 
     @Override
     public Medium getBook(String isbn) {
-        return DataStore.INSTANCE.getBook(isbn.replaceAll("[^0-9]", ""));
+        return dataStore.getBook(isbn.replaceAll("[^0-9]", ""));
     }
 
     @Override
     public Medium getDisc(String barcode) {
-        return DataStore.INSTANCE.getDisc(barcode.replaceAll("[^0-9]", ""));
+        return dataStore.getDisc(barcode.replaceAll("[^0-9]", ""));
     }
 
     @Override
     public Medium[] getDiscs() {
-        return DataStore.INSTANCE.getDiscs();
+        return dataStore.getDiscs();
     }
 
     /**
@@ -132,7 +140,7 @@ public class MediaServiceImpl implements MediaService {
         if (!checkIsbn(isbn))
             return MediaServiceResult.ISBN_INVALID;
 
-        Book old = (Book) DataStore.INSTANCE.getBook(isbn);
+        Book old = (Book) dataStore.getBook(isbn);
 
         if (old == null)
             return MediaServiceResult.NOT_FOUND;
@@ -147,7 +155,7 @@ public class MediaServiceImpl implements MediaService {
         if (book.getTitle() != null && !old.getTitle().equals(book.getTitle()))
             old.setTitle(book.getTitle());
 
-        DataStore.INSTANCE.updateObject(old);
+        dataStore.updateObject(old);
 
         return MediaServiceResult.OK;
     }
@@ -161,7 +169,7 @@ public class MediaServiceImpl implements MediaService {
         if (!checkBarcode(barcode))
             return MediaServiceResult.BARCODE_INVALID;
 
-        Disc old = (Disc) DataStore.INSTANCE.getDisc(barcode);
+        Disc old = (Disc) dataStore.getDisc(barcode);
 
         if (old == null)
             return MediaServiceResult.NOT_FOUND;
@@ -180,7 +188,7 @@ public class MediaServiceImpl implements MediaService {
         if (disc.getFsk() != null && !old.getFsk().equals(disc.getFsk()))
             old.setFsk(disc.getFsk());
 
-        DataStore.INSTANCE.updateObject(old);
+        dataStore.updateObject(old);
 
         return MediaServiceResult.OK;
     }
